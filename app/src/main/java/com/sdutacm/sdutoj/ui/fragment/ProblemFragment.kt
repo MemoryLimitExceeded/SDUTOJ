@@ -5,61 +5,55 @@ import androidx.annotation.LayoutRes
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.sdutacm.sdutoj.adapter.ProblemAdapter
+import com.sdutacm.sdutoj.item.bean.ProblemBean
 import com.sdutacm.sdutoj.mvp.base.BaseFragment
 import com.sdutacm.sdutoj.mvp.main.IMainContract
 import com.sdutacm.sdutoj.mvp.main.model.ProblemModel
-import com.sdutacm.sdutoj.mvp.main.presenter.ProblemPresenter
 import com.sdutacm.sdutoj.ui.fragment.common.ListFragment
-import com.sdutacm.sdutoj.item.bean.ProblemBean
 import com.sdutacm.sdutoj.item.entity.ProblemItemEntity
-import com.sdutacm.sdutoj.mvp.main.model.ProblemModel.Companion.problemRequestStartPid
+import com.sdutacm.sdutoj.mvp.main.model.ProblemModel.Companion.mMinProblemPid
+import com.sdutacm.sdutoj.mvp.main.presenter.ProblemPresenter
+import com.sdutacm.sdutoj.mvp.main.presenter.ProblemPresenter.Companion.mInterval
 
 class ProblemFragment : ListFragment<ProblemItemEntity>() {
-
-    private var mNeedProblemFirstIndex = problemRequestStartPid
-
-    private var mInterval = 0
-
-    private var mUpdateCount = 0
 
     companion object {
         @JvmStatic
         fun newInstance(@LayoutRes contentLayoutId: Int): BaseFragment {
             val fragment = ProblemFragment()
-            return ListFragment.newInstance(contentLayoutId, fragment)
+            return newInstance(contentLayoutId, fragment)
         }
     }
 
-    override fun updateView(data: Any?) {
-        if (data is Array<*>) {
-            hideLoading()
-            for (item: Any? in data) {
-                if (item != null) {
-                    mAdapter.addData(ProblemItemEntity(item as ProblemBean))
-                }
-            }
-            mNeedProblemFirstIndex = mNeedProblemFirstIndex + mInterval + 1
-        } else if (data is ProblemBean) {
-            val newData = ProblemItemEntity(data)
-            val index = mAdapter.data.indexOf(newData)
-            mAdapter.setData(index, newData)
-            mUpdateCount++
-            if (mUpdateCount == mAdapter.data.size) {
-                setRefreshing(false)
-                mUpdateCount = 0
-            }
+    override fun loadMoreData(data: Any) {
+        if ((data as ArrayList<*>).size == mInterval || (data[0] as ProblemBean).pid == mMinProblemPid) {
+            super.loadMoreData(data)
+        } else {
+            mAdapter.loadMoreEnd()
         }
+        for (item in data) {
+            mAdapter.addData(ProblemItemEntity(item as ProblemBean))
+        }
+    }
+
+    override fun updateData(data: Any?) {
+        val newData = ArrayList<ProblemItemEntity>()
+        for (item in (data as ArrayList<*>)) {
+            newData.add(ProblemItemEntity(item as ProblemBean))
+        }
+        super.updateData(data)
+        mAdapter.setNewData(newData)
     }
 
     override fun initPresenter() {
         mPresenter = ProblemPresenter()
-        mInterval = (mPresenter as ProblemPresenter).getInterval()
         mSemiDevelop = false
     }
 
     override fun initData() {
         if (mIsFirstCreate || mAdapter.data.size == 0) {
-            addData()
+            showLoading()
+            getMoreData()
         }
     }
 
@@ -68,39 +62,31 @@ class ProblemFragment : ListFragment<ProblemItemEntity>() {
     }
 
     override fun initListener() {
-        mRequestLoadMoreListener = BaseQuickAdapter.RequestLoadMoreListener { addData() }
+        mRequestLoadMoreListener = BaseQuickAdapter.RequestLoadMoreListener { getMoreData() }
         mRetryButtonListener = View.OnClickListener {
             hideErrorLoading()
-            addData()
+            getMoreData()
         }
         mRefreshListener = SwipeRefreshLayout.OnRefreshListener {
-            updateData()
+            setRefreshing(true)
+            getData()
         }
     }
 
     override fun initAdapter() {
-        mAdapter = ProblemAdapter(ArrayList(mInterval + 1))
+        mAdapter = ProblemAdapter(ArrayList())
     }
 
-    private fun updateData() {
-        mUpdateCount = 0
-        setRefreshing(true)
-        for (item in mAdapter.data) {
-            mPresenter?.updateData(item.mProblemContent.pid)
-        }
+    private fun getData() {
+        mPresenter?.getData(null)
     }
 
-    private fun addData() {
-        showLoading()
-        val data = mPresenter?.getData(mNeedProblemFirstIndex)
+    private fun getMoreData() {
+        val data = mAdapter.getLastData()
         if (data != null) {
-            hideLoading()
-            for (item: Any? in (data as Array<*>)) {
-                if (item != null) {
-                    mAdapter.addData(ProblemItemEntity(item as ProblemBean))
-                }
-            }
-            mNeedProblemFirstIndex = mNeedProblemFirstIndex + mInterval + 1
+            mPresenter?.getMoreData(data.mProblemContent.pid)
+        } else {
+            mPresenter?.getMoreData(mMinProblemPid)
         }
     }
 

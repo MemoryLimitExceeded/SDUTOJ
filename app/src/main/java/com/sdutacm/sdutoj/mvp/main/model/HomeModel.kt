@@ -10,25 +10,24 @@ import com.sdutacm.sdutoj.ui.fragment.StatusFragment
 
 class HomeModel : FragmentModel() {
 
-    override fun updateData(index: Any) {
-    }
-
     override fun updateDatabase(data: Any) {
     }
 
-    override fun requestDataFromDB() {
+    override fun requestDataFromDB(args: HashMap<String, Any>, type: Int) {
     }
 
-    override fun requestDataFromNetWork() {
+    override fun requestDataFromNetWork(args: HashMap<String, Any>, type: Int) {
     }
 
-    override fun requestData(args : Any?): Any {
-        return HomeDataHelper(
-            arrayListOf(
-                ProblemFragment.newInstance(R.layout.fragment_list),
-                ContestFragment.newInstance(R.layout.fragment_list),
-                StatusFragment.newInstance(R.layout.fragment_list),
-                StandingFragment.newInstance(R.layout.fragment_list)
+    override fun requestData(args: Any?) {
+        mPresenter?.requestSuccess(
+            HomeDataHelper(
+                arrayListOf(
+                    ProblemFragment.newInstance(R.layout.fragment_list),
+                    ContestFragment.newInstance(R.layout.fragment_list),
+                    StatusFragment.newInstance(R.layout.fragment_list),
+                    StandingFragment.newInstance(R.layout.fragment_list)
+                )
             )
         )
     }

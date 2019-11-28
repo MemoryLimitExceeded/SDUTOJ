@@ -6,7 +6,7 @@ import com.sdutacm.sdutoj.adapter.ViewPagerAdapter
 import com.sdutacm.sdutoj.mvp.base.BaseFragment
 import com.sdutacm.sdutoj.mvp.main.model.HomeModel
 import com.sdutacm.sdutoj.mvp.main.model.HomeModel.HomeDataHelper
-import com.sdutacm.sdutoj.mvp.main.presenter.HomePresenter
+import com.sdutacm.sdutoj.mvp.main.presenter.FragmentPresenter
 import com.sdutacm.sdutoj.ui.fragment.common.TabFragment
 import com.sdutacm.sdutoj.utils.DataUtils
 
@@ -18,20 +18,24 @@ class HomeFragment : TabFragment() {
         @JvmStatic
         fun newInstance(@LayoutRes contentLayoutId: Int): BaseFragment {
             val fragment = HomeFragment()
-            return TabFragment.newInstance(contentLayoutId, fragment)
+            return newInstance(contentLayoutId, fragment)
         }
     }
 
-    override fun initPresenter() {
-        mPresenter = HomePresenter()
-    }
-
-    override fun initData() {
-        mHomeData = mPresenter?.getData(null) as HomeDataHelper
+    override fun updateData(data: Any?) {
+        mHomeData = data as HomeDataHelper
     }
 
     override fun getModelFromView(): HomeModel {
         return HomeModel()
+    }
+
+    override fun initPresenter() {
+        mPresenter = FragmentPresenter()
+    }
+
+    override fun initData() {
+        mPresenter?.getData(null)
     }
 
     override fun initView(rootView: View) {

@@ -34,7 +34,8 @@
                 style="@style/NormalTextView"
                 android:layout_below="@id/item_title"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="5dp" />
+                android:layout_marginTop="5dp"
+                android:textSize="12sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/item_commit_count"
@@ -42,7 +43,8 @@
                 android:layout_below="@id/item_create_date"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginEnd="2dp" />
+                android:layout_marginEnd="2dp"
+                android:textSize="12sp" />
     </RelativeLayout>
 
 </com.google.android.material.card.MaterialCardView>

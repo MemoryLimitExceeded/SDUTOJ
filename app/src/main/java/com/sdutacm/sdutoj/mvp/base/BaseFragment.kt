@@ -1,15 +1,13 @@
 package com.sdutacm.sdutoj.mvp.base
 
 import android.content.Context
-import android.database.sqlite.SQLiteOpenHelper
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import com.sdutacm.sdutoj.mvp.main.common.FragmentPresenter
-import com.sdutacm.sdutoj.ui.activity.MainActivity
+import com.sdutacm.sdutoj.mvp.main.presenter.FragmentPresenter
 import com.sdutacm.sdutoj.ui.widget.LoadingView
 
 abstract class BaseFragment : Fragment(),
@@ -25,6 +23,8 @@ abstract class BaseFragment : Fragment(),
 
     protected var mRetryButtonListener: View.OnClickListener? = null
 
+    protected var mIsViewInit = false
+
     companion object {
 
         private const val ARG_CONTENT_LAYOUT_ID = "ContentLayoutId"
@@ -36,6 +36,7 @@ abstract class BaseFragment : Fragment(),
             }
             return fragment
         }
+
     }
 
     protected abstract fun initPresenter()
@@ -57,8 +58,9 @@ abstract class BaseFragment : Fragment(),
         loadingView?.loadingViewSetVisibility(View.VISIBLE)
     }
 
-    override fun hideErrorLoading() {
+    protected fun hideErrorLoading() {
         loadingView?.dataErrorViewSetVisibility(View.INVISIBLE)
+        loadingView?.loadingViewSetVisibility(View.VISIBLE)
     }
 
     override fun onAttach(context: Context) {
@@ -78,6 +80,7 @@ abstract class BaseFragment : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        mIsViewInit = false
         return inflater.inflate(mContentLayoutId, container, false)
     }
 
@@ -86,6 +89,7 @@ abstract class BaseFragment : Fragment(),
         loadingView = LoadingView(view, mRetryButtonListener)
         initData()
         initView(view)
+        mIsViewInit = true
         mIsFirstCreate = false
     }
 

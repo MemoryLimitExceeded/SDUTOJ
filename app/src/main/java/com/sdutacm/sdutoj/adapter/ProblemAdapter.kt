@@ -29,11 +29,19 @@ class ProblemAdapter(data: List<ProblemItemEntity>) : ListAdapter<ProblemItemEnt
             .setText(
                 R.id.item_commit_count,
                 getXmlString(R.string.problem_item_commit_count).format(
-                    content.accepted * 100.0 / content.submission,
+                    content.accepted * 100 / checkDivisor(content.submission),
                     content.accepted,
                     content.submission
                 )
             )
+    }
+
+    private fun checkDivisor(submission: Int): Double {
+        if (submission == 0) {
+            return 1.0
+        } else {
+            return submission * 1.0
+        }
     }
 
     private fun getXmlString(@StringRes resInt: Int): String {

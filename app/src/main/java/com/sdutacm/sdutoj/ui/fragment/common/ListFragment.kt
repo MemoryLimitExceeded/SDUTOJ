@@ -33,10 +33,12 @@ abstract class ListFragment<T : ListItemEntity> : BaseFragment(), IMainContract.
     protected var mSemiDevelop = true
 
     companion object {
+
         @JvmStatic
         fun newInstance(@LayoutRes contentLayoutId: Int, fragment: BaseFragment): BaseFragment {
             return BaseFragment.newInstance(contentLayoutId, fragment)
         }
+
     }
 
     protected abstract fun initAdapter()
@@ -45,21 +47,27 @@ abstract class ListFragment<T : ListItemEntity> : BaseFragment(), IMainContract.
 
     protected fun setRefreshing(refreshing: Boolean) {
         mSwipeRefreshLayout.isRefreshing = refreshing
+        mAdapter.setEnableLoadMore(!refreshing)
     }
 
-    open fun getEntity(): List<ListItemEntity> {
-        val list = ArrayList<ProblemItemEntity>()
-        return list
+    override fun updateData(data: Any?) {
+        hideLoading()
     }
 
-    override fun updateView(data: Any?) {
+    override fun loadMoreData(data: Any) {
+        hideLoading()
     }
 
     override fun hideLoading() {
         if (mAdapter.data.size == 0) {
             super.hideLoading()
         } else {
-            mAdapter.loadMoreComplete()
+            if (mAdapter.isLoading) {
+                mAdapter.loadMoreComplete()
+            } else if (mSwipeRefreshLayout.isRefreshing) {
+                setRefreshing(false)
+                Toast.makeText(context, R.string.get_data_success_hint, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -77,7 +85,7 @@ abstract class ListFragment<T : ListItemEntity> : BaseFragment(), IMainContract.
                 mAdapter.loadMoreFail()
             } else if (mSwipeRefreshLayout.isRefreshing) {
                 setRefreshing(false)
-                Toast.makeText(context, R.string.get_data_error_hint, Toast.LENGTH_LONG).show()
+                Toast.makeText(context, R.string.get_data_error_hint, Toast.LENGTH_SHORT).show()
             }
         }
     }

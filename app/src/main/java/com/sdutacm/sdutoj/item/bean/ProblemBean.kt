@@ -15,4 +15,4 @@ data class ProblemBean constructor(
     val added_time: String = "",
     val accepted: Int = 0,
     val submission: Int = 0
-)
+) : BeanInterface

@@ -21,24 +21,16 @@ abstract class BasePresenter<V : IBaseContract.IBaseView, M : IBaseContract.IBas
         mModel = null
     }
 
-    override fun getData(args: Any?): Any? {
-        return mModel?.requestData(args)
+    override fun getData(args: Any?) {
+        mModel?.requestData(args)
     }
 
-    override fun requestSuccess(data: Any?) {
-        mView?.updateView(data)
-    }
-
-    override fun requestDataWait() {
-        mView?.showLoading()
+    override fun requestSuccess(data: Any) {
+        mView?.updateData(data)
     }
 
     override fun requestDataError() {
         mView?.errorLoading()
-    }
-
-    override fun updateData(index: Any) {
-        mModel?.updateData(index)
     }
 
 }

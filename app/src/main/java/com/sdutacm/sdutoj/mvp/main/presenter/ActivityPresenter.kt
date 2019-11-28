@@ -17,4 +17,12 @@ class ActivityPresenter : BasePresenter<MainActivity, ActivityModel>(),
         }
     }
 
+    override fun requestMoreDataSuccess(data: Any) {
+        mView?.loadMoreData(data)
+    }
+
+    override fun getMoreData(args: Any) {
+        mModel?.requestMoreData(args)
+    }
+
 }

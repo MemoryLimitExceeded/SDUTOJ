@@ -17,7 +17,7 @@
                 android:layout_gravity="bottom"
                 app:tabIndicatorHeight="0dp"
                 app:tabSelectedTextColor="@color/blue"
-                app:tabUnboundedRipple="true" />
+                app:tabRippleColor="@color/darkgray" />
 
     </androidx.viewpager.widget.ViewPager>
 

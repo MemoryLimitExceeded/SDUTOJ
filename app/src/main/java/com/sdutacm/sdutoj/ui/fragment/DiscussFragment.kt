@@ -4,7 +4,7 @@ import androidx.annotation.LayoutRes
 import com.sdutacm.sdutoj.adapter.DiscussAdapter
 import com.sdutacm.sdutoj.mvp.base.BaseFragment
 import com.sdutacm.sdutoj.mvp.main.IMainContract
-import com.sdutacm.sdutoj.mvp.main.presenter.ProblemPresenter
+import com.sdutacm.sdutoj.mvp.main.presenter.FragmentPresenter
 import com.sdutacm.sdutoj.ui.fragment.common.ListFragment
 import com.sdutacm.sdutoj.item.entity.DiscussItemEntity
 
@@ -14,7 +14,7 @@ class DiscussFragment : ListFragment<DiscussItemEntity>() {
         @JvmStatic
         fun newInstance(@LayoutRes contentLayoutId: Int): BaseFragment {
             val fragment = DiscussFragment()
-            return ListFragment.newInstance(contentLayoutId, fragment)
+            return newInstance(contentLayoutId, fragment)
         }
     }
 
@@ -22,7 +22,7 @@ class DiscussFragment : ListFragment<DiscussItemEntity>() {
     }
 
     override fun initPresenter() {
-        mPresenter = ProblemPresenter()
+        mPresenter = FragmentPresenter()
     }
 
     override fun initData() {

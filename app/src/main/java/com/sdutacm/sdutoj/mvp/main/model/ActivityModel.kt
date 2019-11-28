@@ -13,22 +13,21 @@ import com.sdutacm.sdutoj.ui.fragment.UserFragment
 class ActivityModel : BaseModel<BasePresenter<MainActivity, ActivityModel>>(),
     IMainContract.IMainModel {
 
-    override fun updateData(index: Any) {
+    override fun requestMoreData(args: Any) {
     }
 
-    override fun updateDatabase(data: Any) {
-    }
-
-    override fun requestData(args: Any?): ActivityDataHelper {
+    override fun requestData(args: Any?) {
         val fragmentList = arrayListOf(
             HomeFragment.newInstance(R.layout.fragment_tablayout),
             DiscussFragment.newInstance(R.layout.fragment_list),
             UserFragment.newInstance(R.layout.fragment_list)
         )
         val titleList = arrayOf("Home", "Discuss", "User")
-        return ActivityDataHelper(
-            fragmentList,
-            titleList
+        mPresenter?.requestSuccess(
+            ActivityDataHelper(
+                fragmentList,
+                titleList
+            )
         )
     }
 

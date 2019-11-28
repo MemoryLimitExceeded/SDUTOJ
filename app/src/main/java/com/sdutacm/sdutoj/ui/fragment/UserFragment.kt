@@ -4,7 +4,7 @@ import androidx.annotation.LayoutRes
 import com.sdutacm.sdutoj.adapter.UserAdapter
 import com.sdutacm.sdutoj.mvp.base.BaseFragment
 import com.sdutacm.sdutoj.mvp.main.IMainContract
-import com.sdutacm.sdutoj.mvp.main.presenter.ProblemPresenter
+import com.sdutacm.sdutoj.mvp.main.presenter.FragmentPresenter
 import com.sdutacm.sdutoj.ui.fragment.common.ListFragment
 import com.sdutacm.sdutoj.item.entity.UserItemEntity
 
@@ -22,7 +22,7 @@ class UserFragment : ListFragment<UserItemEntity>() {
     }
 
     override fun initPresenter() {
-        mPresenter = ProblemPresenter()
+        mPresenter = FragmentPresenter()
     }
 
     override fun initData() {

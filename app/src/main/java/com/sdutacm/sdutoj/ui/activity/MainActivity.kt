@@ -7,6 +7,7 @@ import com.sdutacm.sdutoj.adapter.ViewPagerAdapter
 import com.sdutacm.sdutoj.mvp.base.BaseActivity
 import com.sdutacm.sdutoj.mvp.main.model.ActivityModel.ActivityDataHelper
 import com.sdutacm.sdutoj.mvp.main.IMainContract
+import com.sdutacm.sdutoj.mvp.main.model.ActivityModel
 import com.sdutacm.sdutoj.mvp.main.presenter.ActivityPresenter
 
 class MainActivity : BaseActivity<ActivityPresenter>(),
@@ -20,8 +21,15 @@ class MainActivity : BaseActivity<ActivityPresenter>(),
 
     private lateinit var mViewData: ActivityDataHelper
 
+    override fun loadMoreData(data: Any) {
+    }
+
+    override fun updateData(data: Any?) {
+        mViewData = data as ActivityDataHelper
+    }
+
     override fun getModelFromView(): IMainContract.IMainModel? {
-        return null
+        return ActivityModel()
     }
 
     override fun initView() {
@@ -42,7 +50,7 @@ class MainActivity : BaseActivity<ActivityPresenter>(),
     }
 
     override fun initData() {
-        mViewData = mPresenter?.getData(null) as ActivityDataHelper
+        mPresenter?.getData(null)
     }
 
     private fun initViewPagerAdapter() {

@@ -6,4 +6,13 @@ import com.sdutacm.sdutoj.item.entity.common.ListItemEntity
 
 abstract class ListAdapter<T : ListItemEntity>(data: List<T>) :
     BaseMultiItemQuickAdapter<T, QuickViewHolder>(data) {
+
+    fun getLastData(): T? {
+        if (data.size > 0) {
+            return data[data.size - 1]
+        } else {
+            return null
+        }
+    }
+
 }

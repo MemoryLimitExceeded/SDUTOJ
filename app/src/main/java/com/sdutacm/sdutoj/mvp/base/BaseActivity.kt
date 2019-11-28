@@ -1,7 +1,5 @@
 package com.sdutacm.sdutoj.mvp.base
 
-import android.content.Context
-import android.database.sqlite.SQLiteOpenHelper
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -25,9 +23,6 @@ abstract class BaseActivity<P : BasePresenter<out IBaseContract.IBaseView, out I
 
     protected abstract fun initData()
 
-    override fun updateView(data: Any?) {
-    }
-
     override fun hideLoading() {
         loadingView?.loadingViewSetVisibility(View.INVISIBLE)
     }
@@ -41,7 +36,7 @@ abstract class BaseActivity<P : BasePresenter<out IBaseContract.IBaseView, out I
         loadingView?.loadingViewSetVisibility(View.VISIBLE)
     }
 
-    override fun hideErrorLoading() {
+    protected fun hideErrorLoading() {
         loadingView?.dataErrorViewSetVisibility(View.INVISIBLE)
     }
 

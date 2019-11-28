@@ -20,10 +20,12 @@ abstract class TabFragment : BaseFragment(), IMainContract.IMainView {
     protected lateinit var mViewPagerAdapter: ViewPagerAdapter
 
     companion object {
+
         @JvmStatic
         fun newInstance(@LayoutRes contentLayoutId: Int, fragment: BaseFragment): BaseFragment {
             return BaseFragment.newInstance(contentLayoutId, fragment)
         }
+
     }
 
     protected abstract fun initViewPagerAdapter()
@@ -37,7 +39,7 @@ abstract class TabFragment : BaseFragment(), IMainContract.IMainView {
         mPresenter?.attach(this)
     }
 
-    override fun updateView(data : Any?) {
+    override fun loadMoreData(data: Any) {
     }
 
     override fun initView(rootView: View) {
