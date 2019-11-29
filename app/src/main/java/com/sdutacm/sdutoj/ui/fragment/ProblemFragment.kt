@@ -12,21 +12,23 @@ import com.sdutacm.sdutoj.mvp.main.model.ProblemModel
 import com.sdutacm.sdutoj.ui.fragment.common.ListFragment
 import com.sdutacm.sdutoj.item.entity.ProblemItemEntity
 import com.sdutacm.sdutoj.mvp.main.model.ProblemModel.Companion.mMinProblemPid
+import com.sdutacm.sdutoj.mvp.main.model.ProblemModel.Companion.mProblemInterval
 import com.sdutacm.sdutoj.mvp.main.presenter.ProblemPresenter
-import com.sdutacm.sdutoj.mvp.main.presenter.ProblemPresenter.Companion.mInterval
 
 class ProblemFragment : ListFragment<ProblemItemEntity>() {
 
     companion object {
+
         @JvmStatic
         fun newInstance(@LayoutRes contentLayoutId: Int): BaseFragment {
             val fragment = ProblemFragment()
             return newInstance(contentLayoutId, fragment)
         }
+
     }
 
     override fun loadMoreData(data: Any) {
-        if ((data as ArrayList<*>).size == mInterval || (data[0] as ProblemBean).pid == mMinProblemPid) {
+        if ((data as ArrayList<*>).size == mProblemInterval) {
             super.loadMoreData(data)
         } else {
             mAdapter.loadMoreEnd()

@@ -1,8 +1,8 @@
 package com.sdutacm.sdutoj.mvp.main.common
 
+import android.database.sqlite.SQLiteDatabase
 import com.sdutacm.sdutoj.data.database.SQLiteHelper
 import com.sdutacm.sdutoj.data.network.INetApiService
-import com.sdutacm.sdutoj.item.bean.BeanInterface
 import com.sdutacm.sdutoj.mvp.base.BaseModel
 import com.sdutacm.sdutoj.mvp.main.presenter.FragmentPresenter
 import com.sdutacm.sdutoj.mvp.main.IMainContract
@@ -30,7 +30,9 @@ abstract class FragmentModel : BaseModel<FragmentPresenter>(),
         private val mRetrofit: Retrofit = Retrofit.Builder().baseUrl(NETWORK_HOST_URL)
             .addConverterFactory(GsonConverterFactory.create()).build()
 
-        private val mDataBaseHelper = SQLiteHelper.getInstance()
+        private val mDataBaseHelper = SQLiteHelper.getInstance()!!
+
+        const val mQueryRequestMaxLimit = 1000
 
         const val mQueryParametersCmd = "cmp"
 
@@ -39,14 +41,12 @@ abstract class FragmentModel : BaseModel<FragmentPresenter>(),
         const val mQueryParametersLimit = "limit"
 
         @JvmStatic
-        fun makeArgs(cmp: String?, order: String?, limit: Int): HashMap<String, Any> {
+        fun makeArgs(cmp: String?, order: String, limit: Int): HashMap<String, Any> {
             val args = HashMap<String, Any>()
             if (cmp != null) {
                 args[mQueryParametersCmd] = cmp
             }
-            if (order != null) {
-                args[mQueryParametersOrder] = order
-            }
+            args[mQueryParametersOrder] = order
             args[mQueryParametersLimit] = limit
             return args
         }
@@ -55,7 +55,7 @@ abstract class FragmentModel : BaseModel<FragmentPresenter>(),
 
     protected val mService: INetApiService = mRetrofit.create(INetApiService::class.java)
 
-    protected val mDataBase = mDataBaseHelper?.writableDatabase
+    protected val mDataBase: SQLiteDatabase = mDataBaseHelper.writableDatabase
 
     protected abstract fun updateDatabase(data: Any)
 
@@ -73,12 +73,39 @@ abstract class FragmentModel : BaseModel<FragmentPresenter>(),
         requestDataFromNetWork(args as HashMap<String, Any>, 0)
     }
 
-    protected fun requestSuccess(data: List<BeanInterface>, type: Int) {
+    protected fun requestSuccess(data: Any, type: Int) {
         if (type == 0) {
             mPresenter?.requestSuccess(data)
         } else {
             mPresenter?.requestMoreDataSuccess(data)
         }
+    }
+
+    protected fun toArray(selectionArgs: ArrayList<String>): Array<String> {
+        val newSelectionArgs = Array(selectionArgs.size) { it.toString() }
+        for (i in 0 until selectionArgs.size) {
+            newSelectionArgs[i] = selectionArgs[i]
+        }
+        return newSelectionArgs
+    }
+
+    protected fun addCmdParameters(args: String, selection: String): String = when (args) {
+        (CommonQueryParameters.CMP_EQUAL.parameters) -> "$selection=?"
+        (CommonQueryParameters.CMP_NOT_EQUAL.parameters) -> "$selection!=?"
+        (CommonQueryParameters.CMP_LESS.parameters) -> "$selection<?"
+        (CommonQueryParameters.CMP_LESS_OR_EQUAL.parameters) -> "$selection<=?"
+        (CommonQueryParameters.CMP_GREATER.parameters) -> "$selection>?"
+        (CommonQueryParameters.CMP_GREATER_OR_EQUAL.parameters) ->
+            "$selection>=?"
+        else -> "$selection=?"
+    }
+
+    protected fun addSelection(selection: String, appendSelection: String): String {
+        var newSelection = selection
+        if (selection.isNotEmpty()) {
+            newSelection = selection + " and "
+        }
+        return newSelection + appendSelection
     }
 
 }

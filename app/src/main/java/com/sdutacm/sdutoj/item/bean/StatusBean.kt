@@ -12,4 +12,4 @@ data class StatusBean constructor(
     val language: String = "",
     val code_length: Int = 0,
     val submission_time: String = ""
-) : BeanInterface
+)

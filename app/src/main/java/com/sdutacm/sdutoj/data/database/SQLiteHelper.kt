@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper
 
 class SQLiteHelper private constructor(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+
     companion object {
 
         private const val mProblemTable =
@@ -26,6 +27,21 @@ class SQLiteHelper private constructor(context: Context) :
                     ProblemTable.SUBMISSION + " int not null" +
                     ")"
 
+        private const val mSolutionTable =
+            "create table " + SolutionTable.TABLENAME + "(" +
+                    SolutionTable.RUNID + " int primary key," +
+                    SolutionTable.UID + " int not null," +
+                    SolutionTable.USERNAME + " varchar(20) not null," +
+                    SolutionTable.PID + " int not null," +
+                    SolutionTable.CID + " int not null," +
+                    SolutionTable.RESULT + " int not null," +
+                    SolutionTable.TIME + " int not null," +
+                    SolutionTable.MEMORY + " int not null," +
+                    SolutionTable.LANGUAGE + " varchar(10) not null," +
+                    SolutionTable.CODELENGTH + " int not null," +
+                    SolutionTable.SUBMISSIONTIME + " varchar(30) not null" +
+                    ")"
+
         @Volatile
         private var instance: SQLiteHelper? = null
 
@@ -41,6 +57,7 @@ class SQLiteHelper private constructor(context: Context) :
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(mProblemTable)
+        db?.execSQL(mSolutionTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {

@@ -7,6 +7,7 @@ const val DATABASE_VERSION = 1
 class ProblemTable {
 
     companion object {
+
         const val TABLENAME = "problemtable"
 
         const val PID = "pid"
@@ -36,6 +37,39 @@ class ProblemTable {
         const val ACCEPTED = "accepted"
 
         const val SUBMISSION = "submission"
+
+    }
+
+}
+
+class SolutionTable{
+
+    companion object{
+
+        const val TABLENAME = "solutiontable"
+
+        const val RUNID = "runid"
+
+        const val UID = "uid"
+
+        const val USERNAME = "user_name"
+
+        const val PID = "pid"
+
+        const val CID = "cid"
+
+        const val RESULT ="result"
+
+        const val TIME = "time"
+
+        const val MEMORY = "memory"
+
+        const val LANGUAGE = "language"
+
+        const val CODELENGTH = "code_length"
+
+        const val SUBMISSIONTIME = "submission_time"
+
     }
 
 }

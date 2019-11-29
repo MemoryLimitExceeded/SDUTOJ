@@ -71,12 +71,6 @@ abstract class ListFragment<T : ListItemEntity> : BaseFragment(), IMainContract.
         }
     }
 
-    override fun showLoading() {
-        if (mAdapter.data.size == 0) {
-            super.showLoading()
-        }
-    }
-
     override fun errorLoading() {
         if (mAdapter.data.size == 0) {
             super.errorLoading()

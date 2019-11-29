@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="10dp"
+        app:contentPadding="10dp">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/item_status_run_id"
+                    style="@style/NormalTextView"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@id/item_status_user" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/item_status_language"
+                    style="@style/SmallTextView"
+                    android:layout_below="@id/item_status_run_id"
+                    android:layout_marginTop="8dp" />
+
+            <LinearLayout
+                    android:id="@+id/item_status_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/item_status_user_ic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/ic_status_user" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/item_status_user_text"
+                        style="@style/NormalTextView" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/item_status_problem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/item_status_user"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/item_status_problem_ic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/ic_status_problem" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/item_status_problem_text"
+                        style="@style/NormalTextView" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/item_status_time"
+                    style="@style/SmallTextView" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/item_status_memory"
+                    style="@style/SmallTextView"
+                    android:layout_centerHorizontal="true" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/item_status_code_len"
+                    style="@style/SmallTextView"
+                    android:layout_alignParentEnd="true" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/item_status_date"
+                    style="@style/SmallTextView"
+                    android:layout_below="@id/item_status_code_len"
+                    android:layout_alignParentBottom="true" />
+
+            <LinearLayout
+                    android:id="@+id/item_status_result"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/item_status_code_len"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="4dp"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/item_status_result_ic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/item_status_result_text"
+                        style="@style/NormalTextView" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

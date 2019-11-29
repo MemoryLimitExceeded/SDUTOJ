@@ -17,7 +17,11 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:hint">这里是文本测试</item>
+<!--        <item name="android:hint">这里是文本测试</item>-->
+    </style>
+
+    <style name="SmallTextView" parent="NormalTextView">
+        <item name="android:textSize">12sp</item>
     </style>
 
 </resources>

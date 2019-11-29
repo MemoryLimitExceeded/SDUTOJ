@@ -6,12 +6,6 @@ import com.sdutacm.sdutoj.mvp.main.model.ProblemModel.Companion.mMinProblemPid
 
 class ProblemPresenter : FragmentPresenter() {
 
-    companion object{
-
-        const val mInterval = 50
-
-    }
-
     override fun getData(args: Any?) {
         if (args == null) {
             super.getData(
@@ -20,8 +14,7 @@ class ProblemPresenter : FragmentPresenter() {
                     null,
                     null,
                     FragmentModel.CommonQueryParameters.CMP_GREATER_OR_EQUAL.parameters,
-                    FragmentModel.CommonQueryParameters.ORDER_ASC.parameters,
-                    mInterval
+                    FragmentModel.CommonQueryParameters.ORDER_ASC.parameters
                 )
             )
         } else {
@@ -37,8 +30,7 @@ class ProblemPresenter : FragmentPresenter() {
                     null,
                     null,
                     FragmentModel.CommonQueryParameters.CMP_GREATER_OR_EQUAL.parameters,
-                    FragmentModel.CommonQueryParameters.ORDER_ASC.parameters,
-                    mInterval
+                    FragmentModel.CommonQueryParameters.ORDER_ASC.parameters
                 )
             )
         }else{
@@ -48,8 +40,7 @@ class ProblemPresenter : FragmentPresenter() {
                     null,
                     null,
                     FragmentModel.CommonQueryParameters.CMP_GREATER.parameters,
-                    FragmentModel.CommonQueryParameters.ORDER_ASC.parameters,
-                    mInterval
+                    FragmentModel.CommonQueryParameters.ORDER_ASC.parameters
                 )
             )
         }

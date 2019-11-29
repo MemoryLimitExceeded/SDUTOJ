@@ -16,27 +16,27 @@ class ProblemModel : FragmentModel() {
 
         private val problemCache = SparseArray<ProblemBean>()
 
-        private const val mQueryParametersPid = "pid"
+        private const val mQueryParametersPId = "pid"
 
         private const val mQueryParametersTitle = "title"
 
         private const val mQueryParametersSource = "source"
 
-        const val mQueryRequestMaxLimit = 1000
+        const val mProblemInterval = 50
 
         const val mMinProblemPid = 1000
 
         @JvmStatic
         fun makeArgs(
-            pid: Int = 1000,
+            pid: Int = mMinProblemPid,
             title: String? = null,
             source: String? = null,
             cmp: String? = null,
-            order: String? = null,
-            limit: Int = 1
+            order: String = CommonQueryParameters.ORDER_DESC.parameters,
+            limit: Int = mProblemInterval
         ): Map<String, Any> {
             val args = makeArgs(cmp, order, limit)
-            args[mQueryParametersPid] = pid
+            args[mQueryParametersPId] = pid
             if (title != null) {
                 args[mQueryParametersTitle] = title
             }
@@ -84,41 +84,33 @@ class ProblemModel : FragmentModel() {
         var order: String? = null
         val data = ArrayList<ProblemBean>()
         val length = args[mQueryParametersLimit] as Int
-        if (args[mQueryParametersPid] != null) {
-            selectionArgs.add(args[mQueryParametersPid].toString())
-            selection = selection + ProblemTable.PID
-            when (args[mQueryParametersCmd]) {
-                (CommonQueryParameters.CMP_EQUAL.parameters) -> selection = selection + "="
-                (CommonQueryParameters.CMP_NOT_EQUAL.parameters) -> selection = selection + "!="
-                (CommonQueryParameters.CMP_LESS.parameters) -> selection = selection + "<"
-                (CommonQueryParameters.CMP_LESS_OR_EQUAL.parameters) -> selection = selection + "<="
-                (CommonQueryParameters.CMP_GREATER.parameters) -> selection = selection + ">"
-                (CommonQueryParameters.CMP_GREATER_OR_EQUAL.parameters) -> selection = selection + ">="
-                else -> selection = selection + "="
-            }
-            selection = selection + "?"
+        if (args[mQueryParametersPId] != null) {
+            selectionArgs.add(args[mQueryParametersPId].toString())
+            selection = addSelection(selection, ProblemTable.PID)
+            selection = addCmdParameters((args[mQueryParametersCmd] as String), selection)
         }
         if (args[mQueryParametersTitle] != null) {
             selectionArgs.add(args[mQueryParametersTitle].toString())
-            selection = selection + ProblemTable.TITLE + " like %?%"
+            selection = addSelection(selection, ProblemTable.TITLE + " like %?%")
         }
         if (args[mQueryParametersSource] != null) {
             selectionArgs.add(args[mQueryParametersSource].toString())
-            selection = selection + ProblemTable.SOURCE + " like %?%"
+            selection = addSelection(selection, ProblemTable.SOURCE + " like %?%")
         }
         if (args[mQueryParametersOrder] != null) {
             order = ProblemTable.PID + " " + args[mQueryParametersOrder].toString()
         }
-        val cursor: Cursor = mDataBase?.query(
+        val cursor: Cursor = mDataBase.query(
             ProblemTable.TABLENAME,
             null,
             selection,
             toArray(selectionArgs),
             null,
             null,
-            order
-        ) ?: return
-        while (cursor.moveToNext() && data.size < length) {
+            order,
+            length.toString()
+        )
+        while (cursor.moveToNext()) {
             val item = ProblemBean(
                 cursor.getInt(cursor.getColumnIndex(ProblemTable.PID)),
                 cursor.getString(cursor.getColumnIndex(ProblemTable.TITLE)),
@@ -163,20 +155,14 @@ class ProblemModel : FragmentModel() {
         contentValues.put(ProblemTable.ACCEPTED, data.accepted)
         contentValues.put(ProblemTable.SUBMISSION, data.submission)
         if (mDataBase?.update(
-                ProblemTable.TABLENAME, contentValues, ProblemTable.PID + "=?",
+                ProblemTable.TABLENAME,
+                contentValues,
+                ProblemTable.PID + "=?",
                 arrayOf("${data.pid}")
             ) == 0
         ) {
             mDataBase.insert(ProblemTable.TABLENAME, null, contentValues)
         }
-    }
-
-    private fun toArray(selectionArgs: ArrayList<String>): Array<String> {
-        val newSelectionArgs = Array(selectionArgs.size) { it.toString() }
-        for (i in 0 until selectionArgs.size) {
-            newSelectionArgs[i] = selectionArgs[i]
-        }
-        return newSelectionArgs
     }
 
 }
