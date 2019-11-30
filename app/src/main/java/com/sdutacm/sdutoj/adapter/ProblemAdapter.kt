@@ -23,7 +23,7 @@ class ProblemAdapter(data: List<ProblemItemEntity>) : ListAdapter<ProblemItemEnt
     private fun setSubmission(helper: QuickViewHolder, content: ProblemBean): ProblemAdapter {
         helper.setText(
             R.id.item_problem_commit_count,
-            getXmlString(R.string.problem_item_commit_count).format(
+            getResString(R.string.problem_item_commit_count).format(
                 content.accepted * 100 / checkDivisor(content.submission),
                 content.accepted,
                 content.submission
@@ -40,7 +40,7 @@ class ProblemAdapter(data: List<ProblemItemEntity>) : ListAdapter<ProblemItemEnt
     private fun setLimit(helper: QuickViewHolder, content: ProblemBean): ProblemAdapter {
         helper.setText(
             R.id.item_problem_limit,
-            getXmlString(R.string.problem_item_limit).format(
+            getResString(R.string.problem_item_limit).format(
                 content.time_limit,
                 content.memory_limit
             )
@@ -51,7 +51,7 @@ class ProblemAdapter(data: List<ProblemItemEntity>) : ListAdapter<ProblemItemEnt
     private fun setTitle(helper: QuickViewHolder, content: ProblemBean): ProblemAdapter {
         helper.setText(
             R.id.item_problem_title,
-            getXmlString(R.string.problem_item_title).format(content.pid, content.title)
+            getResString(R.string.problem_item_title).format(content.pid, content.title)
         )
         return this
     }

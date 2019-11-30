@@ -1,5 +1,7 @@
 package com.sdutacm.sdutoj.adapter
 
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import com.sdutacm.sdutoj.QuickViewHolder
 import com.sdutacm.sdutoj.R
 import com.sdutacm.sdutoj.adapter.common.ListAdapter
@@ -12,18 +14,42 @@ class StatusAdapter(data: List<StatusItemEntity>) : ListAdapter<StatusItemEntity
         addItemType(0, R.layout.item_status_list)
     }
 
-    enum class StatusResult(val parameters: String, val result: Int) {
-        WAITING("Waiting", 0),
-        ACCEPTED("Accepted", 1),
-        TIME_LIMIT_EXCEEDED("Time Limit Exceeded", 2),
-        MEMORY_LIMIT_EXCEEDED("Memory Limit Exceeded", 3),
-        WRONG_ANSWER("Wrong Answer", 4),
-        RUNTIME_ERROR("Runtime Error", 5),
-        OUTPUT_LIMIT_EXCEEDED("Output Limit Exceeded", 6),
-        COMPILE_ERROR("Compile Error", 7),
-        PRESENTATION_ERROR("Presentation Error", 8),
-        SYSTEM_ERROR("System Error", 11),
-        JUDGING("Judging", 12)
+    enum class StatusResult(
+        @ColorRes val colorRes: Int, @DrawableRes val drawableRes: Int, val parameters: String,
+        val result: Int
+    ) {
+        WAITING(R.color.blue, R.drawable.ic_solution_result_waiting, "Waiting", 0),
+        ACCEPTED(R.color.green, R.drawable.ic_solution_result_ac, "Accepted", 1),
+        TIME_LIMIT_EXCEEDED(
+            R.color.purple,
+            R.drawable.ic_solution_result_tle,
+            "Time Limit Exceeded",
+            2
+        ),
+        MEMORY_LIMIT_EXCEEDED(
+            R.color.gray,
+            R.drawable.ic_solution_result_mle,
+            "Memory Limit Exceeded",
+            3
+        ),
+        WRONG_ANSWER(R.color.red, R.drawable.ic_solution_result_wa, "Wrong Answer", 4),
+        RUNTIME_ERROR(R.color.brown, R.drawable.ic_solution_result_re, "Runtime Error", 5),
+        OUTPUT_LIMIT_EXCEEDED(
+            R.color.darkorange,
+            R.drawable.ic_solution_result_ole,
+            "Output Limit Exceeded",
+            6
+        ),
+        COMPILE_ERROR(R.color.violet, R.drawable.ic_solution_result_ce, "Compile Error", 7),
+        PRESENTATION_ERROR(
+            R.color.yellow,
+            R.drawable.ic_solution_result_pe,
+            "Presentation Error",
+            8
+        ),
+        SYSTEM_ERROR(R.color.darkslategray, R.drawable.ic_solution_result_se, "System Error", 11),
+        JUDGING(R.color.hotpink, R.drawable.ic_solution_result_judging, "Judging", 12),
+        DEFAULT(R.color.white, 0, "", 13)
     }
 
     override fun convert(helper: QuickViewHolder, item: StatusItemEntity) {
@@ -40,22 +66,24 @@ class StatusAdapter(data: List<StatusItemEntity>) : ListAdapter<StatusItemEntity
     }
 
     private fun setResult(helper: QuickViewHolder, content: StatusBean): StatusAdapter {
-        val result: String =
+        val result: StatusResult =
             when (content.result) {
-                (StatusResult.WAITING.result) -> StatusResult.WAITING.parameters
-                (StatusResult.ACCEPTED.result) -> StatusResult.ACCEPTED.parameters
-                (StatusResult.TIME_LIMIT_EXCEEDED.result) -> StatusResult.TIME_LIMIT_EXCEEDED.parameters
-                (StatusResult.MEMORY_LIMIT_EXCEEDED.result) -> StatusResult.MEMORY_LIMIT_EXCEEDED.parameters
-                (StatusResult.WRONG_ANSWER.result) -> StatusResult.WRONG_ANSWER.parameters
-                (StatusResult.RUNTIME_ERROR.result) -> StatusResult.RUNTIME_ERROR.parameters
-                (StatusResult.OUTPUT_LIMIT_EXCEEDED.result) -> StatusResult.OUTPUT_LIMIT_EXCEEDED.parameters
-                (StatusResult.COMPILE_ERROR.result) -> StatusResult.COMPILE_ERROR.parameters
-                (StatusResult.PRESENTATION_ERROR.result) -> StatusResult.PRESENTATION_ERROR.parameters
-                (StatusResult.SYSTEM_ERROR.result) -> StatusResult.SYSTEM_ERROR.parameters
-                (StatusResult.JUDGING.result) -> StatusResult.JUDGING.parameters
-                else -> "--"
+                (StatusResult.WAITING.result) -> StatusResult.WAITING
+                (StatusResult.ACCEPTED.result) -> StatusResult.ACCEPTED
+                (StatusResult.TIME_LIMIT_EXCEEDED.result) -> StatusResult.TIME_LIMIT_EXCEEDED
+                (StatusResult.MEMORY_LIMIT_EXCEEDED.result) -> StatusResult.MEMORY_LIMIT_EXCEEDED
+                (StatusResult.WRONG_ANSWER.result) -> StatusResult.WRONG_ANSWER
+                (StatusResult.RUNTIME_ERROR.result) -> StatusResult.RUNTIME_ERROR
+                (StatusResult.OUTPUT_LIMIT_EXCEEDED.result) -> StatusResult.OUTPUT_LIMIT_EXCEEDED
+                (StatusResult.COMPILE_ERROR.result) -> StatusResult.COMPILE_ERROR
+                (StatusResult.PRESENTATION_ERROR.result) -> StatusResult.PRESENTATION_ERROR
+                (StatusResult.SYSTEM_ERROR.result) -> StatusResult.SYSTEM_ERROR
+                (StatusResult.JUDGING.result) -> StatusResult.JUDGING
+                else -> StatusResult.DEFAULT
             }
-        helper.setText(R.id.item_status_result_text, result)
+        helper.setText(R.id.item_status_result_text, result.parameters)
+            .setTextColor(R.id.item_status_result_text, getResColor(result.colorRes))
+            .setImageResource(R.id.item_status_result_ic, result.drawableRes)
         return this
     }
 
@@ -67,7 +95,7 @@ class StatusAdapter(data: List<StatusItemEntity>) : ListAdapter<StatusItemEntity
     private fun setCodeLenInfo(helper: QuickViewHolder, content: StatusBean): StatusAdapter {
         helper.setText(
             R.id.item_status_code_len,
-            getXmlString(R.string.status_item_code_len).format(checkValue(content.code_length))
+            getResString(R.string.status_item_code_len).format(checkValue(content.code_length))
         )
         return this
     }
@@ -75,7 +103,7 @@ class StatusAdapter(data: List<StatusItemEntity>) : ListAdapter<StatusItemEntity
     private fun setMemoryInfo(helper: QuickViewHolder, content: StatusBean): StatusAdapter {
         helper.setText(
             R.id.item_status_memory,
-            getXmlString(R.string.status_item_memory).format(checkValue(content.memory))
+            getResString(R.string.status_item_memory).format(checkValue(content.memory))
         )
         return this
     }
@@ -83,7 +111,7 @@ class StatusAdapter(data: List<StatusItemEntity>) : ListAdapter<StatusItemEntity
     private fun setTimeInfo(helper: QuickViewHolder, content: StatusBean): StatusAdapter {
         helper.setText(
             R.id.item_status_time,
-            getXmlString(R.string.status_item_time).format(checkValue(content.time))
+            getResString(R.string.status_item_time).format(checkValue(content.time))
         )
         return this
     }
@@ -101,7 +129,7 @@ class StatusAdapter(data: List<StatusItemEntity>) : ListAdapter<StatusItemEntity
     private fun setLanguageInfo(helper: QuickViewHolder, content: StatusBean): StatusAdapter {
         helper.setText(
             R.id.item_status_language,
-            getXmlString(R.string.status_item_language).format(content.language)
+            getResString(R.string.status_item_language).format(content.language)
         )
         return this
     }
@@ -109,7 +137,7 @@ class StatusAdapter(data: List<StatusItemEntity>) : ListAdapter<StatusItemEntity
     private fun setRunId(helper: QuickViewHolder, content: StatusBean): StatusAdapter {
         helper.setText(
             R.id.item_status_run_id,
-            getXmlString(R.string.status_item_runid).format(content.runid)
+            getResString(R.string.status_item_runid).format(content.runid)
         )
         return this
     }
