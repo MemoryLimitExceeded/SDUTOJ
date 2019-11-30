@@ -8,31 +8,31 @@ class ProblemTable {
 
     companion object {
 
-        const val TABLENAME = "problemtable"
+        const val TABLE_NAME = "problemtable"
 
         const val PID = "pid"
 
         const val TITLE = "title"
 
-        const val TIMELIMIT = "time_limit"
+        const val TIME_LIMIT = "time_limit"
 
-        const val MEMORYLIMIT = "memory_limit"
+        const val MEMORY_LIMIT = "memory_limit"
 
-        const val DESCIPTION = "description"
+        const val DESCRIPTION = "description"
 
         const val INPUT = "input"
 
         const val OUTPUT = "output"
 
-        const val SAMPLEINPUT = "sample_input"
+        const val SAMPLE_INPUT = "sample_input"
 
-        const val SAMPLEOUTPUT = "sample_output"
+        const val SAMPLE_OUTPUT = "sample_output"
 
         const val HINT = "hint"
 
         const val SOURCE = "source"
 
-        const val ADDEDTIME = "added_time"
+        const val ADDED_TIME = "added_time"
 
         const val ACCEPTED = "accepted"
 
@@ -42,13 +42,13 @@ class ProblemTable {
 
 }
 
-class SolutionTable{
+class SolutionTable {
 
-    companion object{
+    companion object {
 
-        const val TABLENAME = "solutiontable"
+        const val TABLE_NAME = "solutiontable"
 
-        const val RUNID = "runid"
+        const val RUN_ID = "runid"
 
         const val UID = "uid"
 
@@ -58,7 +58,7 @@ class SolutionTable{
 
         const val CID = "cid"
 
-        const val RESULT ="result"
+        const val RESULT = "result"
 
         const val TIME = "time"
 
@@ -66,9 +66,33 @@ class SolutionTable{
 
         const val LANGUAGE = "language"
 
-        const val CODELENGTH = "code_length"
+        const val CODE_LENGTH = "code_length"
 
-        const val SUBMISSIONTIME = "submission_time"
+        const val SUBMISSION_TIME = "submission_time"
+
+    }
+
+}
+
+class ContestTable {
+
+    companion object {
+
+        const val TABLE_NAME = "contesttable"
+
+        const val CID = "cid"
+
+        const val NAME = "name"
+
+        const val TYPE = "type"
+
+        const val START_TIME = "start_time"
+
+        const val END_TIME = "end_time"
+
+        const val REGISTER_START_TIME = "register_start_time"
+
+        const val REGISTER_END_TIME = "register_end_time"
 
     }
 

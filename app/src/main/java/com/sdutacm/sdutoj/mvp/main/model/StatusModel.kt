@@ -3,6 +3,7 @@ package com.sdutacm.sdutoj.mvp.main.model
 import android.content.ContentValues
 import android.database.Cursor
 import android.util.SparseArray
+import com.sdutacm.sdutoj.LogUtils
 import com.sdutacm.sdutoj.data.database.SolutionTable
 import com.sdutacm.sdutoj.item.bean.StatusBean
 import com.sdutacm.sdutoj.mvp.main.common.FragmentModel
@@ -16,21 +17,21 @@ class StatusModel : FragmentModel() {
 
         private val statusCache = SparseArray<StatusBean>()
 
-        const val mStatusInterval = 50
+        const val STATUS_INTERVAL = 50
 
-        private const val mQueryParametersRunId = "runid"
+        private const val QUERY_PARAMETERS_RUN_ID = "runid"
 
-        private const val mQueryParametersUId = "uid"
+        private const val QUERY_PARAMETERS_UID = "uid"
 
-        private const val mQueryParametersUserName = "user_name"
+        private const val QUERY_PARAMETERS_USER_NAME = "user_name"
 
-        private const val mQueryParametersPId = "pid"
+        private const val QUERY_PARAMETERS_PID = "pid"
 
-        private const val mQueryParametersCId = "cid"
+        private const val QUERY_PARAMETERS_CID = "cid"
 
-        private const val mQueryParametersResult = "result"
+        private const val QUERY_PARAMETERS_RESULT = "result"
 
-        private const val mQueryParametersLanguage = "language"
+        private const val QUERY_PARAMETERS_LANGUAGE = "language"
 
         @JvmStatic
         fun makeArgs(
@@ -43,29 +44,29 @@ class StatusModel : FragmentModel() {
             language: Int? = null,
             cmp: String? = null,
             order: String = CommonQueryParameters.ORDER_DESC.parameters,
-            limit: Int = mStatusInterval
+            limit: Int = STATUS_INTERVAL
         ): Map<String, Any> {
             val args = makeArgs(cmp, order, limit)
             if (runid != null) {
-                args[mQueryParametersRunId] = runid
+                args[QUERY_PARAMETERS_RUN_ID] = runid
             }
             if (uid != null) {
-                args[mQueryParametersUId] = uid
+                args[QUERY_PARAMETERS_UID] = uid
             }
             if (userName != null) {
-                args[mQueryParametersUserName] = userName
+                args[QUERY_PARAMETERS_USER_NAME] = userName
             }
             if (pid != null) {
-                args[mQueryParametersPId] = pid
+                args[QUERY_PARAMETERS_PID] = pid
             }
             if (cid != null) {
-                args[mQueryParametersCId] = cid
+                args[QUERY_PARAMETERS_CID] = cid
             }
             if (result != null) {
-                args[mQueryParametersResult] = result
+                args[QUERY_PARAMETERS_RESULT] = result
             }
             if (language != null) {
-                args[mQueryParametersLanguage] = language
+                args[QUERY_PARAMETERS_LANGUAGE] = language
             }
             return args
         }
@@ -75,7 +76,6 @@ class StatusModel : FragmentModel() {
     override fun requestDataFromNetWork(args: HashMap<String, Any>, type: Int) {
         mService.getSolution(args).enqueue(object : Callback<List<StatusBean>> {
             override fun onFailure(call: Call<List<StatusBean>>, t: Throwable) {
-                com.sdutacm.sdutoj.utils.LogUtils.d("Solution request fail : $t")
                 if (type == 1) {
                     requestDataFromDB(args, type)
                 } else {
@@ -92,7 +92,6 @@ class StatusModel : FragmentModel() {
                     for (item in statusBeans) {
                         statusCache.put(item.runid, item)
                         updateDatabase(item)
-                        com.sdutacm.sdutoj.utils.LogUtils.d("Solution request successful : ${item.runid}")
                     }
                     requestSuccess(statusBeans, type)
                 } else {
@@ -107,41 +106,41 @@ class StatusModel : FragmentModel() {
         val selectionArgs = ArrayList<String>()
         var order: String? = null
         val data = ArrayList<StatusBean>()
-        val length = args[mQueryParametersLimit] as Int
-        if (args[mQueryParametersRunId] != null) {
-            selectionArgs.add(args[mQueryParametersRunId].toString())
-            selection = addSelection(selection, SolutionTable.RUNID)
-            selection = addCmdParameters((args[mQueryParametersCmd] as String), selection)
+        val length = args[QUERY_PARAMETERS_LIMIT] as Int
+        if (args[QUERY_PARAMETERS_RUN_ID] != null) {
+            selectionArgs.add(args[QUERY_PARAMETERS_RUN_ID].toString())
+            selection = addSelection(selection, SolutionTable.RUN_ID)
+            selection = addCmdParameters((args[QUERY_PARAMETERS_CMD] as String), selection)
         }
-        if (args[mQueryParametersUId] != null) {
-            selectionArgs.add(args[mQueryParametersUId].toString())
+        if (args[QUERY_PARAMETERS_UID] != null) {
+            selectionArgs.add(args[QUERY_PARAMETERS_UID].toString())
             selection = addSelection(selection, SolutionTable.UID + "=?")
         }
-        if (args[mQueryParametersUserName] != null) {
-            selectionArgs.add(args[mQueryParametersUserName].toString())
+        if (args[QUERY_PARAMETERS_USER_NAME] != null) {
+            selectionArgs.add(args[QUERY_PARAMETERS_USER_NAME].toString())
             selection = addSelection(selection, SolutionTable.USERNAME + "=?")
         }
-        if (args[mQueryParametersPId] != null) {
-            selectionArgs.add(args[mQueryParametersPId].toString())
+        if (args[QUERY_PARAMETERS_PID] != null) {
+            selectionArgs.add(args[QUERY_PARAMETERS_PID].toString())
             selection = addSelection(selection, SolutionTable.PID + "=?")
         }
-        if (args[mQueryParametersCId] != null) {
-            selectionArgs.add(args[mQueryParametersCId].toString())
+        if (args[QUERY_PARAMETERS_CID] != null) {
+            selectionArgs.add(args[QUERY_PARAMETERS_CID].toString())
             selection = addSelection(selection, SolutionTable.CID + "=?")
         }
-        if (args[mQueryParametersResult] != null) {
-            selectionArgs.add(args[mQueryParametersResult].toString())
+        if (args[QUERY_PARAMETERS_RESULT] != null) {
+            selectionArgs.add(args[QUERY_PARAMETERS_RESULT].toString())
             selection = addSelection(selection, SolutionTable.RESULT + "=?")
         }
-        if (args[mQueryParametersLanguage] != null) {
-            selectionArgs.add(args[mQueryParametersLanguage].toString())
+        if (args[QUERY_PARAMETERS_LANGUAGE] != null) {
+            selectionArgs.add(args[QUERY_PARAMETERS_LANGUAGE].toString())
             selection = addSelection(selection, SolutionTable.LANGUAGE + "=?")
         }
-        if (args[mQueryParametersOrder] != null) {
-            order = SolutionTable.RUNID + " " + args[mQueryParametersOrder].toString()
+        if (args[QUERY_PARAMETERS_ORDER] != null) {
+            order = SolutionTable.RUN_ID + " " + args[QUERY_PARAMETERS_ORDER].toString()
         }
         val cursor: Cursor = mDataBase.query(
-            SolutionTable.TABLENAME,
+            SolutionTable.TABLE_NAME,
             null,
             selection,
             toArray(selectionArgs),
@@ -152,7 +151,7 @@ class StatusModel : FragmentModel() {
         )
         while (cursor.moveToNext()) {
             val item = StatusBean(
-                cursor.getInt(cursor.getColumnIndex(SolutionTable.RUNID)),
+                cursor.getInt(cursor.getColumnIndex(SolutionTable.RUN_ID)),
                 cursor.getInt(cursor.getColumnIndex(SolutionTable.UID)),
                 cursor.getString(cursor.getColumnIndex(SolutionTable.USERNAME)),
                 cursor.getInt(cursor.getColumnIndex(SolutionTable.PID)),
@@ -161,8 +160,8 @@ class StatusModel : FragmentModel() {
                 cursor.getInt(cursor.getColumnIndex(SolutionTable.TIME)),
                 cursor.getInt(cursor.getColumnIndex(SolutionTable.MEMORY)),
                 cursor.getString(cursor.getColumnIndex(SolutionTable.LANGUAGE)),
-                cursor.getInt(cursor.getColumnIndex(SolutionTable.CODELENGTH)),
-                cursor.getString(cursor.getColumnIndex(SolutionTable.SUBMISSIONTIME))
+                cursor.getInt(cursor.getColumnIndex(SolutionTable.CODE_LENGTH)),
+                cursor.getString(cursor.getColumnIndex(SolutionTable.SUBMISSION_TIME))
             )
             statusCache.put(item.runid, item)
             data.add(item)
@@ -177,7 +176,7 @@ class StatusModel : FragmentModel() {
 
     override fun updateDatabase(data: Any) {
         val contentValues = ContentValues()
-        contentValues.put(SolutionTable.RUNID, (data as StatusBean).runid)
+        contentValues.put(SolutionTable.RUN_ID, (data as StatusBean).runid)
         contentValues.put(SolutionTable.UID, data.uid)
         contentValues.put(SolutionTable.USERNAME, data.user_name)
         contentValues.put(SolutionTable.PID, data.pid)
@@ -186,16 +185,16 @@ class StatusModel : FragmentModel() {
         contentValues.put(SolutionTable.TIME, data.time)
         contentValues.put(SolutionTable.MEMORY, data.memory)
         contentValues.put(SolutionTable.LANGUAGE, data.language)
-        contentValues.put(SolutionTable.CODELENGTH, data.code_length)
-        contentValues.put(SolutionTable.SUBMISSIONTIME, data.submission_time)
+        contentValues.put(SolutionTable.CODE_LENGTH, data.code_length)
+        contentValues.put(SolutionTable.SUBMISSION_TIME, data.submission_time)
         if (mDataBase?.update(
-                SolutionTable.TABLENAME,
+                SolutionTable.TABLE_NAME,
                 contentValues,
-                SolutionTable.RUNID + "=?",
+                SolutionTable.RUN_ID + "=?",
                 arrayOf("${data.runid}")
             ) == 0
         ) {
-            mDataBase.insert(SolutionTable.TABLENAME, null, contentValues)
+            mDataBase.insert(SolutionTable.TABLE_NAME, null, contentValues)
         }
     }
 

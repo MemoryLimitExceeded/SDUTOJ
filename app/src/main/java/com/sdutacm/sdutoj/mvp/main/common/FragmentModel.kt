@@ -27,35 +27,35 @@ abstract class FragmentModel : BaseModel<FragmentPresenter>(),
 
         private const val NETWORK_HOST_URL = "https://acm.sdut.edu.cn/onlinejudge2/index.php/API/"
 
-        private val mRetrofit: Retrofit = Retrofit.Builder().baseUrl(NETWORK_HOST_URL)
+        private val RETROFIT: Retrofit = Retrofit.Builder().baseUrl(NETWORK_HOST_URL)
             .addConverterFactory(GsonConverterFactory.create()).build()
 
-        private val mDataBaseHelper = SQLiteHelper.getInstance()!!
+        private val DATABASE_HELPER = SQLiteHelper.getInstance()!!
 
-        const val mQueryRequestMaxLimit = 1000
+        const val QUERY_REQUEST_MAX_LIMIT = 1000
 
-        const val mQueryParametersCmd = "cmp"
+        const val QUERY_PARAMETERS_CMD = "cmp"
 
-        const val mQueryParametersOrder = "order"
+        const val QUERY_PARAMETERS_ORDER = "order"
 
-        const val mQueryParametersLimit = "limit"
+        const val QUERY_PARAMETERS_LIMIT = "limit"
 
         @JvmStatic
         fun makeArgs(cmp: String?, order: String, limit: Int): HashMap<String, Any> {
             val args = HashMap<String, Any>()
             if (cmp != null) {
-                args[mQueryParametersCmd] = cmp
+                args[QUERY_PARAMETERS_CMD] = cmp
             }
-            args[mQueryParametersOrder] = order
-            args[mQueryParametersLimit] = limit
+            args[QUERY_PARAMETERS_ORDER] = order
+            args[QUERY_PARAMETERS_LIMIT] = limit
             return args
         }
 
     }
 
-    protected val mService: INetApiService = mRetrofit.create(INetApiService::class.java)
+    protected val mService: INetApiService = RETROFIT.create(INetApiService::class.java)
 
-    protected val mDataBase: SQLiteDatabase = mDataBaseHelper.writableDatabase
+    protected val mDataBase: SQLiteDatabase = DATABASE_HELPER.writableDatabase
 
     protected abstract fun updateDatabase(data: Any)
 

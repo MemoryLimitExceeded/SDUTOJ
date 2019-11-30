@@ -1,4 +1,4 @@
-package com.sdutacm.sdutoj.utils
+package com.sdutacm.sdutoj
 
 import android.util.Log
 

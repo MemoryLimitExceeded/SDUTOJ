@@ -13,6 +13,16 @@ import com.sdutacm.sdutoj.ui.fragment.UserFragment
 class ActivityModel : BaseModel<BasePresenter<MainActivity, ActivityModel>>(),
     IMainContract.IMainModel {
 
+    companion object {
+
+        private const val HOME_TAB_TITLE_NAME = "Home"
+
+        private const val DISCUSS_TAB_TITLE_NAME = "Discuss"
+
+        private const val USER_TAB_TITLE_NAME = "User"
+
+    }
+
     override fun requestMoreData(args: Any) {
     }
 
@@ -22,7 +32,7 @@ class ActivityModel : BaseModel<BasePresenter<MainActivity, ActivityModel>>(),
             DiscussFragment.newInstance(R.layout.fragment_list),
             UserFragment.newInstance(R.layout.fragment_list)
         )
-        val titleList = arrayOf("Home", "Discuss", "User")
+        val titleList = arrayOf(HOME_TAB_TITLE_NAME, DISCUSS_TAB_TITLE_NAME, USER_TAB_TITLE_NAME)
         mPresenter?.requestSuccess(
             ActivityDataHelper(
                 fragmentList,

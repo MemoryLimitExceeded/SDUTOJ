@@ -8,18 +8,19 @@ import com.sdutacm.sdutoj.mvp.main.model.HomeModel
 import com.sdutacm.sdutoj.mvp.main.model.HomeModel.HomeDataHelper
 import com.sdutacm.sdutoj.mvp.main.presenter.FragmentPresenter
 import com.sdutacm.sdutoj.ui.fragment.common.TabFragment
-import com.sdutacm.sdutoj.utils.DataUtils
 
 class HomeFragment : TabFragment() {
 
     private lateinit var mHomeData: HomeDataHelper
 
     companion object {
+
         @JvmStatic
         fun newInstance(@LayoutRes contentLayoutId: Int): BaseFragment {
             val fragment = HomeFragment()
             return newInstance(contentLayoutId, fragment)
         }
+
     }
 
     override fun updateData(data: Any?) {
@@ -49,7 +50,7 @@ class HomeFragment : TabFragment() {
         mViewPagerAdapter =
             ViewPagerAdapter(
                 childFragmentManager,
-                DataUtils.getMainTabTitle(),
+                mHomeData.fragmentTabTitle,
                 mHomeData.fragmentList
             )
     }

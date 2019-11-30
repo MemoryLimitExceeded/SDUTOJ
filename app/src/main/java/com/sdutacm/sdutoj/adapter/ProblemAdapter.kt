@@ -13,7 +13,7 @@ class ProblemAdapter(data: List<ProblemItemEntity>) : ListAdapter<ProblemItemEnt
     }
 
     override fun convert(helper: QuickViewHolder, item: ProblemItemEntity) {
-        val content = item.mProblemContent
+        val content = item.mProblemBean
         setTitle(helper, content)
             .setLimit(helper, content)
             .setDate(helper, content)

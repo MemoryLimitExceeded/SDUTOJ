@@ -41,7 +41,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
-                        android:src="@drawable/ic_status_user" />
+                        android:src="@drawable/ic_solution_user" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/item_status_user_text"
@@ -63,7 +63,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
-                        android:src="@drawable/ic_status_problem" />
+                        android:src="@drawable/ic_solution_problem" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/item_status_problem_text"

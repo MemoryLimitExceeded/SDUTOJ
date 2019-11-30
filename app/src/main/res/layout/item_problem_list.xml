@@ -24,9 +24,7 @@
                 android:id="@+id/item_problem_title"
                 style="@style/NormalTextView"
                 android:layout_width="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/item_problem_create_date"
@@ -40,8 +38,7 @@
                 style="@style/SmallTextView"
                 android:layout_below="@id/item_problem_create_date"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginEnd="2dp" />
+                android:layout_alignParentBottom="true" />
 
     </RelativeLayout>
 

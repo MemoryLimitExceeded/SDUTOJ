@@ -2,7 +2,7 @@ package com.sdutacm.sdutoj.mvp.main.presenter
 
 import com.sdutacm.sdutoj.mvp.main.common.FragmentModel
 import com.sdutacm.sdutoj.mvp.main.model.ProblemModel
-import com.sdutacm.sdutoj.mvp.main.model.ProblemModel.Companion.mMinProblemPid
+import com.sdutacm.sdutoj.mvp.main.model.ProblemModel.Companion.MIN_PROBLEM_PID
 
 class ProblemPresenter : FragmentPresenter() {
 
@@ -10,7 +10,7 @@ class ProblemPresenter : FragmentPresenter() {
         if (args == null) {
             super.getData(
                 ProblemModel.makeArgs(
-                    mMinProblemPid,
+                    MIN_PROBLEM_PID,
                     null,
                     null,
                     FragmentModel.CommonQueryParameters.CMP_GREATER_OR_EQUAL.parameters,
@@ -23,7 +23,7 @@ class ProblemPresenter : FragmentPresenter() {
     }
 
     override fun getMoreData(args: Any) {
-        if((args as Int)== mMinProblemPid){
+        if((args as Int)== MIN_PROBLEM_PID){
             super.getMoreData(
                 ProblemModel.makeArgs(
                     args,

@@ -1,5 +1,6 @@
 package com.sdutacm.sdutoj.data.network
 
+import com.sdutacm.sdutoj.item.bean.ContestBean
 import com.sdutacm.sdutoj.item.bean.ProblemBean
 import com.sdutacm.sdutoj.item.bean.StatusBean
 import retrofit2.Call
@@ -13,5 +14,8 @@ interface INetApiService {
 
     @GET("Solution")
     fun getSolution(@QueryMap map: MutableMap<String, Any>): Call<List<StatusBean>>
+
+    @GET("Contest")
+    fun getContest(@QueryMap map: MutableMap<String, Any>): Call<List<ContestBean>>
 
 }

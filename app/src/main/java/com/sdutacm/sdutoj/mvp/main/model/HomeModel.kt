@@ -10,6 +10,18 @@ import com.sdutacm.sdutoj.ui.fragment.StatusFragment
 
 class HomeModel : FragmentModel() {
 
+    companion object {
+
+        private const val PROBLEM_TAB_TITLE_NAME = "Problems"
+
+        private const val CONTEST_TAB_TITLE_NAME = "Contests"
+
+        private const val STATUS_TAB_TITLE_NAME = "Status"
+
+        private const val STANDING_TAB_TITLE_NAME = "Standings"
+
+    }
+
     override fun updateDatabase(data: Any) {
     }
 
@@ -27,11 +39,15 @@ class HomeModel : FragmentModel() {
                     ContestFragment.newInstance(R.layout.fragment_list),
                     StatusFragment.newInstance(R.layout.fragment_list),
                     StandingFragment.newInstance(R.layout.fragment_list)
-                )
+                ),
+                arrayOf<String>(PROBLEM_TAB_TITLE_NAME, CONTEST_TAB_TITLE_NAME, STATUS_TAB_TITLE_NAME, STANDING_TAB_TITLE_NAME)
             )
         )
     }
 
-    class HomeDataHelper(val fragmentList: ArrayList<BaseFragment>)
+    class HomeDataHelper(
+        val fragmentList: ArrayList<BaseFragment>,
+        val fragmentTabTitle: Array<String>
+    )
 
 }

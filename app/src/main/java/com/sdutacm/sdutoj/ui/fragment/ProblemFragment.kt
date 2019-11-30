@@ -11,8 +11,8 @@ import com.sdutacm.sdutoj.mvp.main.IMainContract
 import com.sdutacm.sdutoj.mvp.main.model.ProblemModel
 import com.sdutacm.sdutoj.ui.fragment.common.ListFragment
 import com.sdutacm.sdutoj.item.entity.ProblemItemEntity
-import com.sdutacm.sdutoj.mvp.main.model.ProblemModel.Companion.mMinProblemPid
-import com.sdutacm.sdutoj.mvp.main.model.ProblemModel.Companion.mProblemInterval
+import com.sdutacm.sdutoj.mvp.main.model.ProblemModel.Companion.MIN_PROBLEM_PID
+import com.sdutacm.sdutoj.mvp.main.model.ProblemModel.Companion.PROBLEM_INTERVAL
 import com.sdutacm.sdutoj.mvp.main.presenter.ProblemPresenter
 
 class ProblemFragment : ListFragment<ProblemItemEntity>() {
@@ -28,7 +28,7 @@ class ProblemFragment : ListFragment<ProblemItemEntity>() {
     }
 
     override fun loadMoreData(data: Any) {
-        if ((data as ArrayList<*>).size == mProblemInterval) {
+        if ((data as ArrayList<*>).size == PROBLEM_INTERVAL) {
             super.loadMoreData(data)
         } else {
             mAdapter.loadMoreEnd()
@@ -86,9 +86,9 @@ class ProblemFragment : ListFragment<ProblemItemEntity>() {
     private fun getMoreData() {
         val data = mAdapter.getLastData()
         if (data != null) {
-            mPresenter?.getMoreData(data.mProblemContent.pid)
+            mPresenter?.getMoreData(data.mProblemBean.pid)
         } else {
-            mPresenter?.getMoreData(mMinProblemPid)
+            mPresenter?.getMoreData(MIN_PROBLEM_PID)
         }
     }
 

@@ -11,7 +11,7 @@ import com.sdutacm.sdutoj.mvp.main.IMainContract
 import com.sdutacm.sdutoj.ui.fragment.common.ListFragment
 import com.sdutacm.sdutoj.item.entity.StatusItemEntity
 import com.sdutacm.sdutoj.mvp.main.model.StatusModel
-import com.sdutacm.sdutoj.mvp.main.model.StatusModel.Companion.mStatusInterval
+import com.sdutacm.sdutoj.mvp.main.model.StatusModel.Companion.STATUS_INTERVAL
 import com.sdutacm.sdutoj.mvp.main.presenter.StatusPresenter
 
 class StatusFragment : ListFragment<StatusItemEntity>() {
@@ -27,7 +27,7 @@ class StatusFragment : ListFragment<StatusItemEntity>() {
     }
 
     override fun loadMoreData(data: Any) {
-        if ((data as ArrayList<*>).size == mStatusInterval) {
+        if ((data as ArrayList<*>).size == STATUS_INTERVAL) {
             super.loadMoreData(data)
         } else {
             mAdapter.loadMoreEnd()
@@ -68,7 +68,10 @@ class StatusFragment : ListFragment<StatusItemEntity>() {
             hideErrorLoading()
             getMoreData()
         }
-        mRefreshListener = SwipeRefreshLayout.OnRefreshListener { getData() }
+        mRefreshListener = SwipeRefreshLayout.OnRefreshListener {
+            setRefreshing(true)
+            getData()
+        }
     }
 
     override fun initAdapter() {
