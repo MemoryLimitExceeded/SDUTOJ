@@ -1,11 +1,12 @@
-package com.sdutacm.sdutoj.adapter
+package com.sdutacm.sdutoj.adapter.recyclerview.fragment
 
 import androidx.annotation.ColorRes
 import com.sdutacm.sdutoj.QuickViewHolder
 import com.sdutacm.sdutoj.R
 import com.sdutacm.sdutoj.adapter.common.ListAdapter
 import com.sdutacm.sdutoj.item.bean.ContestBean
-import com.sdutacm.sdutoj.item.entity.ContestItemEntity
+import com.sdutacm.sdutoj.item.entity.common.ListItemEntity.Companion.DEFAULT_TYPE
+import com.sdutacm.sdutoj.item.entity.fragment.ContestItemEntity
 
 class ContestAdapter(data: List<ContestItemEntity>) : ListAdapter<ContestItemEntity>(data) {
 
@@ -22,7 +23,7 @@ class ContestAdapter(data: List<ContestItemEntity>) : ListAdapter<ContestItemEnt
     }
 
     init {
-        addItemType(0, R.layout.item_contest_list)
+        addItemType(DEFAULT_TYPE, R.layout.item_contest_list)
     }
 
     override fun convert(helper: QuickViewHolder, item: ContestItemEntity) {

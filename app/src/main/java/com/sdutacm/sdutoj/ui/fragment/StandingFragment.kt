@@ -1,20 +1,20 @@
 package com.sdutacm.sdutoj.ui.fragment
 
 import androidx.annotation.LayoutRes
-import com.sdutacm.sdutoj.adapter.StandingAdapter
-import com.sdutacm.sdutoj.mvp.base.BaseFragment
+import com.sdutacm.sdutoj.adapter.recyclerview.fragment.StandingAdapter
 import com.sdutacm.sdutoj.mvp.main.IMainContract
 import com.sdutacm.sdutoj.mvp.main.presenter.FragmentPresenter
 import com.sdutacm.sdutoj.ui.fragment.common.ListFragment
-import com.sdutacm.sdutoj.item.entity.StandingItemEntity
+import com.sdutacm.sdutoj.item.entity.fragment.StandingItemEntity
 
 class StandingFragment : ListFragment<StandingItemEntity>() {
 
     companion object {
         @JvmStatic
-        fun newInstance(@LayoutRes contentLayoutId: Int): BaseFragment {
+        fun newInstance(@LayoutRes contentLayoutId: Int): StandingFragment {
             val fragment = StandingFragment()
-            return ListFragment.newInstance(contentLayoutId, fragment)
+            newInstance(contentLayoutId, fragment)
+            return fragment
         }
     }
 

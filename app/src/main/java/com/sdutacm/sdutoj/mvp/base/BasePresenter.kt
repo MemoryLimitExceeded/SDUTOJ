@@ -29,7 +29,7 @@ abstract class BasePresenter<V : IBaseContract.IBaseView, M : IBaseContract.IBas
         mView?.updateData(data)
     }
 
-    override fun requestDataError() {
+    override fun requestDataError(args: Any?) {
         mView?.errorLoading()
     }
 

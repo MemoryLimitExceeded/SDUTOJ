@@ -4,12 +4,13 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.sdutacm.sdutoj.adapter.ContestAdapter
+import com.sdutacm.sdutoj.adapter.recyclerview.fragment.ContestAdapter
 import com.sdutacm.sdutoj.item.bean.ContestBean
 import com.sdutacm.sdutoj.mvp.base.BaseFragment
 import com.sdutacm.sdutoj.mvp.main.IMainContract
 import com.sdutacm.sdutoj.ui.fragment.common.ListFragment
-import com.sdutacm.sdutoj.item.entity.ContestItemEntity
+import com.sdutacm.sdutoj.item.entity.fragment.ContestItemEntity
+import com.sdutacm.sdutoj.mvp.main.common.FragmentModel
 import com.sdutacm.sdutoj.mvp.main.model.ContestModel
 import com.sdutacm.sdutoj.mvp.main.model.ContestModel.Companion.CONTEST_INTERVAL
 import com.sdutacm.sdutoj.mvp.main.presenter.ContestPresenter
@@ -21,7 +22,8 @@ class ContestFragment : ListFragment<ContestItemEntity>() {
         @JvmStatic
         fun newInstance(@LayoutRes contentLayoutId: Int): BaseFragment {
             val fragment = ContestFragment()
-            return newInstance(contentLayoutId, fragment)
+            newInstance(contentLayoutId, fragment)
+            return fragment
         }
 
     }
@@ -79,15 +81,21 @@ class ContestFragment : ListFragment<ContestItemEntity>() {
     }
 
     private fun getData() {
+        val args = mPresenter?.dataHelper as ContestPresenter.ContentDataHelper
+        args.setLimit(CONTEST_INTERVAL)
         mPresenter?.getData(null)
     }
 
     private fun getMoreData() {
         val data = mAdapter.getLastData()
+        val args = mPresenter?.dataHelper as ContestPresenter.ContentDataHelper
+        args.setLimit(CONTEST_INTERVAL)
         if (data != null) {
-            mPresenter?.getMoreData(data.mContestBean.cid)
+            args.setCid(data.mContestBean.cid)
+                .setCmp(FragmentModel.CommonQueryParameters.CMP_LESS.parameters)
+            mPresenter?.getMoreData(args)
         } else {
-            mPresenter?.getMoreData(-1)
+            mPresenter?.getMoreData(args)
         }
     }
 

@@ -59,26 +59,22 @@ abstract class FragmentModel : BaseModel<FragmentPresenter>(),
 
     protected abstract fun updateDatabase(data: Any)
 
-    protected abstract fun requestDataFromDB(args: HashMap<String, Any>, type: Int)
+    protected abstract fun requestDataFromDB(args: HashMap<String, Any>)
 
-    protected abstract fun requestDataFromNetWork(args: HashMap<String, Any>, type: Int)
-
-    @Suppress("UNCHECKED_CAST")
-    override fun requestMoreData(args: Any) {
-        requestDataFromNetWork(args as HashMap<String, Any>, 1)
-    }
+    protected abstract fun requestDataFromNetWork(args: HashMap<String, Any>)
 
     @Suppress("UNCHECKED_CAST")
     override fun requestData(args: Any?) {
-        requestDataFromNetWork(args as HashMap<String, Any>, 0)
+        requestDataFromNetWork(args as HashMap<String, Any>)
     }
 
-    protected fun requestSuccess(data: Any, type: Int) {
-        if (type == 0) {
-            mPresenter?.requestSuccess(data)
-        } else {
-            mPresenter?.requestMoreDataSuccess(data)
-        }
+    @Suppress("UNCHECKED_CAST")
+    override fun requestMoreData(args: Any) {
+        requestDataFromDB(args as HashMap<String, Any>)
+    }
+
+    protected fun requestSuccess(data: Any) {
+        mPresenter?.requestSuccess(data)
     }
 
     protected fun toArray(selectionArgs: ArrayList<String>): Array<String> {

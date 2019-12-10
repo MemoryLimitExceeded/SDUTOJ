@@ -23,18 +23,15 @@ abstract class BaseFragment : Fragment(),
 
     protected var mRetryButtonListener: View.OnClickListener? = null
 
-    protected var mIsViewInit = false
-
     companion object {
 
         private const val ARG_CONTENT_LAYOUT_ID = "ContentLayoutId"
 
         @JvmStatic
-        fun newInstance(@LayoutRes contentLayoutId: Int, fragment: BaseFragment): BaseFragment {
+        fun newInstance(@LayoutRes contentLayoutId: Int, fragment: BaseFragment) {
             fragment.arguments = Bundle().apply {
                 putInt(ARG_CONTENT_LAYOUT_ID, contentLayoutId)
             }
-            return fragment
         }
 
     }
@@ -45,12 +42,14 @@ abstract class BaseFragment : Fragment(),
 
     protected abstract fun initData()
 
+    protected abstract fun initListener()
+
     override fun hideLoading() {
-        loadingView?.loadingViewSetVisibility(View.INVISIBLE)
+        loadingView?.loadingViewSetVisibility(View.GONE)
     }
 
     override fun errorLoading() {
-        loadingView?.loadingViewSetVisibility(View.INVISIBLE)
+        loadingView?.loadingViewSetVisibility(View.GONE)
         loadingView?.dataErrorViewSetVisibility(View.VISIBLE)
     }
 
@@ -59,7 +58,7 @@ abstract class BaseFragment : Fragment(),
     }
 
     protected fun hideErrorLoading() {
-        loadingView?.dataErrorViewSetVisibility(View.INVISIBLE)
+        loadingView?.dataErrorViewSetVisibility(View.GONE)
         loadingView?.loadingViewSetVisibility(View.VISIBLE)
     }
 
@@ -80,16 +79,17 @@ abstract class BaseFragment : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mIsViewInit = false
         return inflater.inflate(mContentLayoutId, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (mIsFirstCreate) {
+            onlyFirstCreate()
+        }
         loadingView = LoadingView(view, mRetryButtonListener)
         initData()
         initView(view)
-        mIsViewInit = true
         mIsFirstCreate = false
     }
 
@@ -97,6 +97,10 @@ abstract class BaseFragment : Fragment(),
         super.onDetach()
         mPresenter?.detach()
         mPresenter = null
+    }
+
+    protected open fun onlyFirstCreate() {
+        initListener()
     }
 
 }

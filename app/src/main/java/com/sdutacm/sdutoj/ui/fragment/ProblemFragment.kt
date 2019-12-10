@@ -4,25 +4,29 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.sdutacm.sdutoj.adapter.ProblemAdapter
+import com.sdutacm.sdutoj.R
+import com.sdutacm.sdutoj.adapter.recyclerview.fragment.ProblemAdapter
 import com.sdutacm.sdutoj.item.bean.ProblemBean
-import com.sdutacm.sdutoj.mvp.base.BaseFragment
 import com.sdutacm.sdutoj.mvp.main.IMainContract
 import com.sdutacm.sdutoj.mvp.main.model.ProblemModel
 import com.sdutacm.sdutoj.ui.fragment.common.ListFragment
-import com.sdutacm.sdutoj.item.entity.ProblemItemEntity
+import com.sdutacm.sdutoj.item.entity.fragment.ProblemItemEntity
+import com.sdutacm.sdutoj.mvp.main.common.FragmentModel
 import com.sdutacm.sdutoj.mvp.main.model.ProblemModel.Companion.MIN_PROBLEM_PID
 import com.sdutacm.sdutoj.mvp.main.model.ProblemModel.Companion.PROBLEM_INTERVAL
 import com.sdutacm.sdutoj.mvp.main.presenter.ProblemPresenter
+import com.sdutacm.sdutoj.ui.activity.MainActivity
+import com.sdutacm.sdutoj.ui.fragment.item.ProblemItemFragment
 
 class ProblemFragment : ListFragment<ProblemItemEntity>() {
 
     companion object {
 
         @JvmStatic
-        fun newInstance(@LayoutRes contentLayoutId: Int): BaseFragment {
+        fun newInstance(@LayoutRes contentLayoutId: Int): ProblemFragment {
             val fragment = ProblemFragment()
-            return newInstance(contentLayoutId, fragment)
+            newInstance(contentLayoutId, fragment)
+            return fragment
         }
 
     }
@@ -53,7 +57,7 @@ class ProblemFragment : ListFragment<ProblemItemEntity>() {
     }
 
     override fun initData() {
-        if (mIsFirstCreate || mAdapter.data.size == 0) {
+        if (mAdapter.data.size == 0) {
             showLoading()
             getMoreData()
         }
@@ -77,18 +81,44 @@ class ProblemFragment : ListFragment<ProblemItemEntity>() {
 
     override fun initAdapter() {
         mAdapter = ProblemAdapter(ArrayList())
+        mAdapter.setOnItemClickListener { adapter, view, position ->
+            val data = (adapter.data[position] as ProblemItemEntity).mProblemBean
+            val itemFragment = ProblemItemFragment.newInstance(R.layout.item_fragment, data)
+            val transaction =
+                (activity as MainActivity?)?.supportFragmentManager?.beginTransaction()
+            transaction?.add(
+                R.id.fragment_container,
+                ViewPagerFragment.newInstance(R.layout.fragment_view_pager, itemFragment)
+            )
+                ?.addToBackStack(null)
+                ?.commit()
+            (activity as MainActivity?)?.getFragmentContainer()?.visibility = View.VISIBLE
+        }
     }
 
     private fun getData() {
-        mPresenter?.getData(null)
+        val args = mPresenter?.dataHelper as ProblemPresenter.ProblemDataHelper
+        args.setPid(MIN_PROBLEM_PID)
+            .setCmp(FragmentModel.CommonQueryParameters.CMP_GREATER_OR_EQUAL.parameters)
+            .setOrder(FragmentModel.CommonQueryParameters.ORDER_ASC.parameters)
+            .setLimit(PROBLEM_INTERVAL)
+        mPresenter?.getData(args)
     }
 
     private fun getMoreData() {
         val data = mAdapter.getLastData()
+        val args = mPresenter?.dataHelper as ProblemPresenter.ProblemDataHelper
+        args.setLimit(PROBLEM_INTERVAL)
         if (data != null) {
-            mPresenter?.getMoreData(data.mProblemBean.pid)
+            args.setPid(data.mProblemBean.pid)
+                .setCmp(FragmentModel.CommonQueryParameters.CMP_GREATER.parameters)
+                .setOrder(FragmentModel.CommonQueryParameters.ORDER_ASC.parameters)
+            mPresenter?.getMoreData(args)
         } else {
-            mPresenter?.getMoreData(MIN_PROBLEM_PID)
+            args.setPid(MIN_PROBLEM_PID)
+                .setCmp(FragmentModel.CommonQueryParameters.CMP_GREATER_OR_EQUAL.parameters)
+                .setOrder(FragmentModel.CommonQueryParameters.ORDER_ASC.parameters)
+            mPresenter?.getMoreData(args)
         }
     }
 

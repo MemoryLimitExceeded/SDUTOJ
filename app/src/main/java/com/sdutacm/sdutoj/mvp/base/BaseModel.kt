@@ -5,6 +5,12 @@ abstract class BaseModel<P : BasePresenter<out IBaseContract.IBaseView, out IBas
 
     protected var mPresenter: P? = null
 
+    companion object{
+
+        const val EMPTY_DATA = "empty_data"
+
+    }
+
     @Suppress("UNCHECKED_CAST")
     override fun bind(presenter: IBaseContract.IBasePresenter<out IBaseContract.IBaseView>) {
         mPresenter = presenter as P

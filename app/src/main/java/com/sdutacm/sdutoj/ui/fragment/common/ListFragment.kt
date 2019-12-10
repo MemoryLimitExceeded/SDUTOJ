@@ -1,7 +1,6 @@
 package com.sdutacm.sdutoj.ui.fragment.common
 
 import android.content.Context
-import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.LayoutRes
@@ -13,16 +12,13 @@ import com.sdutacm.sdutoj.R
 import com.sdutacm.sdutoj.adapter.common.ListAdapter
 import com.sdutacm.sdutoj.mvp.base.BaseFragment
 import com.sdutacm.sdutoj.mvp.main.IMainContract
-import com.sdutacm.sdutoj.item.entity.ProblemItemEntity
 import com.sdutacm.sdutoj.item.entity.common.ListItemEntity
 
-abstract class ListFragment<T : ListItemEntity> : BaseFragment(), IMainContract.IMainView {
+abstract class ListFragment<T : ListItemEntity> : BaseFragment(), IMainContract.IMainView{
 
     private lateinit var mRecyclerView: RecyclerView
 
     private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
-
-    private lateinit var mManager: RecyclerView.LayoutManager
 
     protected lateinit var mAdapter: ListAdapter<T>
 
@@ -35,15 +31,13 @@ abstract class ListFragment<T : ListItemEntity> : BaseFragment(), IMainContract.
     companion object {
 
         @JvmStatic
-        fun newInstance(@LayoutRes contentLayoutId: Int, fragment: BaseFragment): BaseFragment {
-            return BaseFragment.newInstance(contentLayoutId, fragment)
+        fun newInstance(@LayoutRes contentLayoutId: Int, fragment: BaseFragment) {
+            BaseFragment.newInstance(contentLayoutId, fragment)
         }
 
     }
 
     protected abstract fun initAdapter()
-
-    protected abstract fun initListener()
 
     protected fun setRefreshing(refreshing: Boolean) {
         mSwipeRefreshLayout.isRefreshing = refreshing
@@ -86,15 +80,7 @@ abstract class ListFragment<T : ListItemEntity> : BaseFragment(), IMainContract.
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        mPresenter?.attach(this)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (mIsFirstCreate) {
-            initAdapter()
-            initListener()
-        }
-        super.onViewCreated(view, savedInstanceState)
+        mPresenter!!.attach(this)
     }
 
     override fun initView(rootView: View) {
@@ -104,11 +90,16 @@ abstract class ListFragment<T : ListItemEntity> : BaseFragment(), IMainContract.
         mAdapter.setOnLoadMoreListener(mRequestLoadMoreListener, mRecyclerView)
         mSwipeRefreshLayout.setOnRefreshListener(mRefreshListener)
         mSwipeRefreshLayout.setColorSchemeResources(R.color.blue)
-        mManager = LinearLayoutManager(context)
-        mRecyclerView.layoutManager = mManager
+        mRecyclerView.layoutManager = LinearLayoutManager(context)
         if (mSemiDevelop) {
             loadingView?.stayTunedViewSetVisibility(View.VISIBLE)
         }
+    }
+
+    override fun onlyFirstCreate() {
+        initAdapter()
+        //mAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN)
+        super.onlyFirstCreate()
     }
 
 }

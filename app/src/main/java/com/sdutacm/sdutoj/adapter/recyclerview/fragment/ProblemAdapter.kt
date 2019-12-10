@@ -1,15 +1,16 @@
-package com.sdutacm.sdutoj.adapter
+package com.sdutacm.sdutoj.adapter.recyclerview.fragment
 
 import com.sdutacm.sdutoj.QuickViewHolder
 import com.sdutacm.sdutoj.R
 import com.sdutacm.sdutoj.adapter.common.ListAdapter
 import com.sdutacm.sdutoj.item.bean.ProblemBean
-import com.sdutacm.sdutoj.item.entity.ProblemItemEntity
+import com.sdutacm.sdutoj.item.entity.common.ListItemEntity.Companion.DEFAULT_TYPE
+import com.sdutacm.sdutoj.item.entity.fragment.ProblemItemEntity
 
 class ProblemAdapter(data: List<ProblemItemEntity>) : ListAdapter<ProblemItemEntity>(data) {
 
     init {
-        addItemType(0, R.layout.item_problem_list)
+        addItemType(DEFAULT_TYPE, R.layout.item_problem_list)
     }
 
     override fun convert(helper: QuickViewHolder, item: ProblemItemEntity) {
@@ -22,7 +23,7 @@ class ProblemAdapter(data: List<ProblemItemEntity>) : ListAdapter<ProblemItemEnt
 
     private fun setSubmission(helper: QuickViewHolder, content: ProblemBean): ProblemAdapter {
         helper.setText(
-            R.id.item_problem_commit_count,
+            R.id.item_problem_list_commit_count,
             getResString(R.string.problem_item_commit_count).format(
                 content.accepted * 100 / checkDivisor(content.submission),
                 content.accepted,
@@ -33,13 +34,13 @@ class ProblemAdapter(data: List<ProblemItemEntity>) : ListAdapter<ProblemItemEnt
     }
 
     private fun setDate(helper: QuickViewHolder, content: ProblemBean): ProblemAdapter {
-        helper.setText(R.id.item_problem_create_date, content.added_time)
+        helper.setText(R.id.item_problem_list_create_date, content.added_time)
         return this
     }
 
     private fun setLimit(helper: QuickViewHolder, content: ProblemBean): ProblemAdapter {
         helper.setText(
-            R.id.item_problem_limit,
+            R.id.item_problem_list_limit,
             getResString(R.string.problem_item_limit).format(
                 content.time_limit,
                 content.memory_limit
@@ -50,7 +51,7 @@ class ProblemAdapter(data: List<ProblemItemEntity>) : ListAdapter<ProblemItemEnt
 
     private fun setTitle(helper: QuickViewHolder, content: ProblemBean): ProblemAdapter {
         helper.setText(
-            R.id.item_problem_title,
+            R.id.item_problem_list_title,
             getResString(R.string.problem_item_title).format(content.pid, content.title)
         )
         return this

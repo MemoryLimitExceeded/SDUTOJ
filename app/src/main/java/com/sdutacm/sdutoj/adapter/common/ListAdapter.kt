@@ -25,6 +25,7 @@ abstract class ListAdapter<T : ListItemEntity>(data: List<T>) :
         return mContext.getString(resInt)
     }
 
+    @Suppress("DEPRECATION")
     protected fun getResColor(@ColorRes resInt: Int): Int {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mContext.getColor(resInt)
@@ -37,6 +38,27 @@ abstract class ListAdapter<T : ListItemEntity>(data: List<T>) :
     @SuppressLint("SimpleDateFormat")
     protected fun transToTimeStamp(date: String): Long {
         return SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date, ParsePosition(0)).time
+    }
+
+    protected fun removeInvisibleChar(oldString: String): String {
+        var start = 0
+        var end = oldString.length
+        for (index in 0 until oldString.length) {
+            if (oldString[index] >= '!' && oldString[index] != ' ') {
+                start = index
+                break
+            }
+            if (index == end - 1) {
+                return ""
+            }
+        }
+        for (index in oldString.length - 1 downTo 0 step 1) {
+            if (oldString[index] >= '!' && oldString[index] != ' ') {
+                end = index + 1
+                break;
+            }
+        }
+        return oldString.substring(start, end)
     }
 
 }

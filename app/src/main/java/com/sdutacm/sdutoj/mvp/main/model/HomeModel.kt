@@ -25,12 +25,6 @@ class HomeModel : FragmentModel() {
     override fun updateDatabase(data: Any) {
     }
 
-    override fun requestDataFromDB(args: HashMap<String, Any>, type: Int) {
-    }
-
-    override fun requestDataFromNetWork(args: HashMap<String, Any>, type: Int) {
-    }
-
     override fun requestData(args: Any?) {
         mPresenter?.requestSuccess(
             HomeDataHelper(
@@ -40,9 +34,20 @@ class HomeModel : FragmentModel() {
                     StatusFragment.newInstance(R.layout.fragment_list),
                     StandingFragment.newInstance(R.layout.fragment_list)
                 ),
-                arrayOf<String>(PROBLEM_TAB_TITLE_NAME, CONTEST_TAB_TITLE_NAME, STATUS_TAB_TITLE_NAME, STANDING_TAB_TITLE_NAME)
+                arrayOf(
+                    PROBLEM_TAB_TITLE_NAME,
+                    CONTEST_TAB_TITLE_NAME,
+                    STATUS_TAB_TITLE_NAME,
+                    STANDING_TAB_TITLE_NAME
+                )
             )
         )
+    }
+
+    override fun requestDataFromDB(args: HashMap<String, Any>) {
+    }
+
+    override fun requestDataFromNetWork(args: HashMap<String, Any>) {
     }
 
     class HomeDataHelper(

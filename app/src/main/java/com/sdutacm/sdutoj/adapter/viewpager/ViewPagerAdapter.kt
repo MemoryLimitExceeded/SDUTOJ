@@ -1,4 +1,4 @@
-package com.sdutacm.sdutoj.adapter
+package com.sdutacm.sdutoj.adapter.viewpager
 
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter

@@ -24,11 +24,11 @@ abstract class BaseActivity<P : BasePresenter<out IBaseContract.IBaseView, out I
     protected abstract fun initData()
 
     override fun hideLoading() {
-        loadingView?.loadingViewSetVisibility(View.INVISIBLE)
+        loadingView?.loadingViewSetVisibility(View.GONE)
     }
 
     override fun errorLoading() {
-        loadingView?.loadingViewSetVisibility(View.INVISIBLE)
+        loadingView?.loadingViewSetVisibility(View.GONE)
         loadingView?.dataErrorViewSetVisibility(View.VISIBLE)
     }
 
@@ -37,7 +37,8 @@ abstract class BaseActivity<P : BasePresenter<out IBaseContract.IBaseView, out I
     }
 
     protected fun hideErrorLoading() {
-        loadingView?.dataErrorViewSetVisibility(View.INVISIBLE)
+        loadingView?.dataErrorViewSetVisibility(View.GONE)
+        loadingView?.loadingViewSetVisibility(View.VISIBLE)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

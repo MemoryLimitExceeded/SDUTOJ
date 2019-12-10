@@ -4,12 +4,12 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.sdutacm.sdutoj.adapter.StatusAdapter
+import com.sdutacm.sdutoj.adapter.recyclerview.fragment.StatusAdapter
 import com.sdutacm.sdutoj.item.bean.StatusBean
-import com.sdutacm.sdutoj.mvp.base.BaseFragment
 import com.sdutacm.sdutoj.mvp.main.IMainContract
 import com.sdutacm.sdutoj.ui.fragment.common.ListFragment
-import com.sdutacm.sdutoj.item.entity.StatusItemEntity
+import com.sdutacm.sdutoj.item.entity.fragment.StatusItemEntity
+import com.sdutacm.sdutoj.mvp.main.common.FragmentModel
 import com.sdutacm.sdutoj.mvp.main.model.StatusModel
 import com.sdutacm.sdutoj.mvp.main.model.StatusModel.Companion.STATUS_INTERVAL
 import com.sdutacm.sdutoj.mvp.main.presenter.StatusPresenter
@@ -19,9 +19,10 @@ class StatusFragment : ListFragment<StatusItemEntity>() {
     companion object {
 
         @JvmStatic
-        fun newInstance(@LayoutRes contentLayoutId: Int): BaseFragment {
+        fun newInstance(@LayoutRes contentLayoutId: Int): StatusFragment {
             val fragment = StatusFragment()
-            return newInstance(contentLayoutId, fragment)
+            newInstance(contentLayoutId, fragment)
+            return fragment
         }
 
     }
@@ -79,15 +80,21 @@ class StatusFragment : ListFragment<StatusItemEntity>() {
     }
 
     private fun getData() {
+        val args = mPresenter?.dataHelper as StatusPresenter.StatusDataHelper
+        args.setLimit(STATUS_INTERVAL)
         mPresenter?.getData(null)
     }
 
     private fun getMoreData() {
         val data = mAdapter.getLastData()
+        val args = mPresenter?.dataHelper as StatusPresenter.StatusDataHelper
+        args.setLimit(STATUS_INTERVAL)
         if (data != null) {
-            mPresenter?.getMoreData(data.mStatusBean.runid)
+            args.setRunId(data.mStatusBean.runid)
+                .setCmp(FragmentModel.CommonQueryParameters.CMP_LESS.parameters)
+            mPresenter?.getMoreData(args)
         } else {
-            mPresenter?.getMoreData(-1)
+            mPresenter?.getMoreData(args)
         }
     }
 

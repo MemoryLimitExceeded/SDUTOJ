@@ -2,8 +2,7 @@ package com.sdutacm.sdutoj.ui.fragment
 
 import android.view.View
 import androidx.annotation.LayoutRes
-import com.sdutacm.sdutoj.adapter.ViewPagerAdapter
-import com.sdutacm.sdutoj.mvp.base.BaseFragment
+import com.sdutacm.sdutoj.adapter.viewpager.ViewPagerAdapter
 import com.sdutacm.sdutoj.mvp.main.model.HomeModel
 import com.sdutacm.sdutoj.mvp.main.model.HomeModel.HomeDataHelper
 import com.sdutacm.sdutoj.mvp.main.presenter.FragmentPresenter
@@ -16,9 +15,10 @@ class HomeFragment : TabFragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance(@LayoutRes contentLayoutId: Int): BaseFragment {
+        fun newInstance(@LayoutRes contentLayoutId: Int): HomeFragment {
             val fragment = HomeFragment()
-            return newInstance(contentLayoutId, fragment)
+            newInstance(contentLayoutId, fragment)
+            return fragment
         }
 
     }
@@ -36,7 +36,7 @@ class HomeFragment : TabFragment() {
     }
 
     override fun initData() {
-        mPresenter?.getData(null)
+        getData()
     }
 
     override fun initView(rootView: View) {

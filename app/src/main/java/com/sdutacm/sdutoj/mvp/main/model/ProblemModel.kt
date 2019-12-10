@@ -15,8 +15,6 @@ class ProblemModel : FragmentModel() {
 
     companion object {
 
-        private val problemCache = SparseArray<ProblemBean>()
-
         private const val QUERY_PARAMETERS_PID = "pid"
 
         private const val QUERY_PARAMETERS_TITLE = "title"
@@ -29,12 +27,12 @@ class ProblemModel : FragmentModel() {
 
         @JvmStatic
         fun makeArgs(
-            pid: Int = MIN_PROBLEM_PID,
+            pid: Int,
             title: String? = null,
             source: String? = null,
             cmp: String? = null,
-            order: String = CommonQueryParameters.ORDER_DESC.parameters,
-            limit: Int = PROBLEM_INTERVAL
+            order: String,
+            limit: Int
         ): Map<String, Any> {
             val args = makeArgs(cmp, order, limit)
             args[QUERY_PARAMETERS_PID] = pid
@@ -49,14 +47,10 @@ class ProblemModel : FragmentModel() {
 
     }
 
-    override fun requestDataFromNetWork(args: HashMap<String, Any>, type: Int) {
+    override fun requestDataFromNetWork(args: HashMap<String, Any>) {
         mService.getProblem(args).enqueue(object : Callback<List<ProblemBean>> {
             override fun onFailure(call: Call<List<ProblemBean>>, t: Throwable) {
-                if (type == 1) {
-                    requestDataFromDB(args, type)
-                } else {
-                    mPresenter?.requestDataError()
-                }
+                mPresenter?.requestDataError(args)
             }
 
             override fun onResponse(
@@ -66,18 +60,17 @@ class ProblemModel : FragmentModel() {
                 val problemBeans = response.body()
                 if (problemBeans != null) {
                     for (item in problemBeans) {
-                        problemCache.put(item.pid, item)
                         updateDatabase(item)
                     }
-                    requestSuccess(problemBeans, type)
+                    requestSuccess(problemBeans)
                 } else {
-                    requestDataFromDB(args, type)
+                    requestSuccess(EMPTY_DATA)
                 }
             }
         })
     }
 
-    override fun requestDataFromDB(args: HashMap<String, Any>, type: Int) {
+    override fun requestDataFromDB(args: HashMap<String, Any>) {
         var selection = ""
         val selectionArgs = ArrayList<String>()
         var order: String? = null
@@ -126,14 +119,13 @@ class ProblemModel : FragmentModel() {
                 cursor.getInt(cursor.getColumnIndex(ProblemTable.ACCEPTED)),
                 cursor.getInt(cursor.getColumnIndex(ProblemTable.SUBMISSION))
             )
-            problemCache.put(item.pid, item)
             data.add(item)
         }
         cursor.close()
         if (data.size == 0) {
-            mPresenter?.requestDataError()
+            mPresenter?.requestDataError(null)
         } else {
-            requestSuccess(data, type)
+            requestSuccess(data)
         }
     }
 
@@ -153,7 +145,7 @@ class ProblemModel : FragmentModel() {
         contentValues.put(ProblemTable.ADDED_TIME, data.added_time)
         contentValues.put(ProblemTable.ACCEPTED, data.accepted)
         contentValues.put(ProblemTable.SUBMISSION, data.submission)
-        if (mDataBase?.update(
+        if (mDataBase.update(
                 ProblemTable.TABLE_NAME,
                 contentValues,
                 ProblemTable.PID + "=?",

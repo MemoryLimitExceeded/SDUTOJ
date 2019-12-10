@@ -1,4 +1,4 @@
-package com.sdutacm.sdutoj.adapter
+package com.sdutacm.sdutoj.adapter.recyclerview.fragment
 
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
@@ -6,12 +6,13 @@ import com.sdutacm.sdutoj.QuickViewHolder
 import com.sdutacm.sdutoj.R
 import com.sdutacm.sdutoj.adapter.common.ListAdapter
 import com.sdutacm.sdutoj.item.bean.StatusBean
-import com.sdutacm.sdutoj.item.entity.StatusItemEntity
+import com.sdutacm.sdutoj.item.entity.common.ListItemEntity.Companion.DEFAULT_TYPE
+import com.sdutacm.sdutoj.item.entity.fragment.StatusItemEntity
 
 class StatusAdapter(data: List<StatusItemEntity>) : ListAdapter<StatusItemEntity>(data) {
 
     init {
-        addItemType(0, R.layout.item_status_list)
+        addItemType(DEFAULT_TYPE, R.layout.item_status_list)
     }
 
     enum class StatusResult(

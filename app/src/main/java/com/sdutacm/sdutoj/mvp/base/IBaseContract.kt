@@ -1,6 +1,5 @@
 package com.sdutacm.sdutoj.mvp.base
 
-
 interface IBaseContract {
 
     interface IBaseModel {
@@ -21,7 +20,7 @@ interface IBaseContract {
         fun attach(view: V)
         fun detach()
         fun getData(args: Any?)
-        fun requestDataError()
+        fun requestDataError(args: Any?)
         fun requestSuccess(data: Any)
     }
 

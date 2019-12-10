@@ -15,8 +15,6 @@ class StatusModel : FragmentModel() {
 
     companion object {
 
-        private val statusCache = SparseArray<StatusBean>()
-
         const val STATUS_INTERVAL = 50
 
         private const val QUERY_PARAMETERS_RUN_ID = "runid"
@@ -35,16 +33,16 @@ class StatusModel : FragmentModel() {
 
         @JvmStatic
         fun makeArgs(
-            runid: Int? = null,
-            uid: Int? = null,
-            userName: String? = null,
-            pid: Int? = null,
-            cid: Int? = null,
-            result: Int? = null,
-            language: Int? = null,
-            cmp: String? = null,
-            order: String = CommonQueryParameters.ORDER_DESC.parameters,
-            limit: Int = STATUS_INTERVAL
+            runid: Int?,
+            uid: Int?,
+            userName: String?,
+            pid: Int?,
+            cid: Int?,
+            result: Int?,
+            language: Int?,
+            cmp: String?,
+            order: String,
+            limit: Int
         ): Map<String, Any> {
             val args = makeArgs(cmp, order, limit)
             if (runid != null) {
@@ -73,14 +71,10 @@ class StatusModel : FragmentModel() {
 
     }
 
-    override fun requestDataFromNetWork(args: HashMap<String, Any>, type: Int) {
+    override fun requestDataFromNetWork(args: HashMap<String, Any>) {
         mService.getSolution(args).enqueue(object : Callback<List<StatusBean>> {
             override fun onFailure(call: Call<List<StatusBean>>, t: Throwable) {
-                if (type == 1) {
-                    requestDataFromDB(args, type)
-                } else {
-                    mPresenter?.requestDataError()
-                }
+                mPresenter?.requestDataError(args)
             }
 
             override fun onResponse(
@@ -90,18 +84,17 @@ class StatusModel : FragmentModel() {
                 val statusBeans = response.body()
                 if (statusBeans != null) {
                     for (item in statusBeans) {
-                        statusCache.put(item.runid, item)
                         updateDatabase(item)
                     }
-                    requestSuccess(statusBeans, type)
+                    requestSuccess(statusBeans)
                 } else {
-                    requestDataFromDB(args, type)
+                    requestSuccess(EMPTY_DATA)
                 }
             }
         })
     }
 
-    override fun requestDataFromDB(args: HashMap<String, Any>, type: Int) {
+    override fun requestDataFromDB(args: HashMap<String, Any>) {
         var selection = ""
         val selectionArgs = ArrayList<String>()
         var order: String? = null
@@ -163,14 +156,13 @@ class StatusModel : FragmentModel() {
                 cursor.getInt(cursor.getColumnIndex(SolutionTable.CODE_LENGTH)),
                 cursor.getString(cursor.getColumnIndex(SolutionTable.SUBMISSION_TIME))
             )
-            statusCache.put(item.runid, item)
             data.add(item)
         }
         cursor.close()
         if (data.size == 0) {
-            mPresenter?.requestDataError()
+            mPresenter?.requestDataError(null)
         } else {
-            requestSuccess(data, type)
+            requestSuccess(data)
         }
     }
 
@@ -187,7 +179,7 @@ class StatusModel : FragmentModel() {
         contentValues.put(SolutionTable.LANGUAGE, data.language)
         contentValues.put(SolutionTable.CODE_LENGTH, data.code_length)
         contentValues.put(SolutionTable.SUBMISSION_TIME, data.submission_time)
-        if (mDataBase?.update(
+        if (mDataBase.update(
                 SolutionTable.TABLE_NAME,
                 contentValues,
                 SolutionTable.RUN_ID + "=?",

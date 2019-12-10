@@ -14,8 +14,6 @@ class ContestModel : FragmentModel() {
 
     companion object {
 
-        private val contestCache = SparseArray<ContestBean>()
-
         const val CONTEST_INTERVAL = 50
 
         private const val QUERY_PARAMETERS_CID = "cid"
@@ -26,12 +24,12 @@ class ContestModel : FragmentModel() {
 
         @JvmStatic
         fun makeArgs(
-            cid: Int? = null,
-            name: String? = null,
-            type: Int? = null,
-            cmp: String? = null,
-            order: String = CommonQueryParameters.ORDER_DESC.parameters,
-            limit: Int = CONTEST_INTERVAL
+            cid: Int?,
+            name: String?,
+            type: Int?,
+            cmp: String?,
+            order: String,
+            limit: Int
         ): Map<String, Any> {
             val args = makeArgs(cmp, order, limit)
             if (cid != null) {
@@ -48,14 +46,10 @@ class ContestModel : FragmentModel() {
 
     }
 
-    override fun requestDataFromNetWork(args: HashMap<String, Any>, type: Int) {
+    override fun requestDataFromNetWork(args: HashMap<String, Any>) {
         mService.getContest(args).enqueue(object : Callback<List<ContestBean>> {
             override fun onFailure(call: Call<List<ContestBean>>, t: Throwable) {
-                if (type == 1) {
-                    requestDataFromDB(args, type)
-                } else {
-                    mPresenter?.requestDataError()
-                }
+                mPresenter?.requestDataError(args)
             }
 
             override fun onResponse(
@@ -65,18 +59,17 @@ class ContestModel : FragmentModel() {
                 val contestBeans = response.body()
                 if (contestBeans != null) {
                     for (item in contestBeans) {
-                        contestCache.put(item.cid, item)
                         updateDatabase(item)
                     }
-                    requestSuccess(contestBeans, type)
+                    requestSuccess(contestBeans)
                 } else {
-                    requestDataFromDB(args, type)
+                    requestSuccess(EMPTY_DATA)
                 }
             }
         })
     }
 
-    override fun requestDataFromDB(args: HashMap<String, Any>, type: Int) {
+    override fun requestDataFromDB(args: HashMap<String, Any>) {
         var selection = ""
         val selectionArgs = ArrayList<String>()
         var order: String? = null
@@ -118,14 +111,13 @@ class ContestModel : FragmentModel() {
                 cursor.getString(cursor.getColumnIndex(ContestTable.REGISTER_START_TIME)),
                 cursor.getString(cursor.getColumnIndex(ContestTable.REGISTER_END_TIME))
             )
-            contestCache.put(item.cid, item)
             data.add(item)
         }
         cursor.close()
         if (data.size == 0) {
-            mPresenter?.requestDataError()
+            mPresenter?.requestDataError(null)
         } else {
-            requestSuccess(data, type)
+            requestSuccess(data)
         }
     }
 
@@ -138,7 +130,7 @@ class ContestModel : FragmentModel() {
         contentValues.put(ContestTable.END_TIME, data.end_time)
         contentValues.put(ContestTable.REGISTER_START_TIME, data.register_start_time)
         contentValues.put(ContestTable.REGISTER_END_TIME, data.register_end_time)
-        if (mDataBase?.update(
+        if (mDataBase.update(
                 ContestTable.TABLE_NAME,
                 contentValues,
                 ContestTable.CID + "=?",

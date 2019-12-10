@@ -1,49 +1,61 @@
 package com.sdutacm.sdutoj.mvp.main.presenter
 
-import com.sdutacm.sdutoj.mvp.main.common.FragmentModel
-import com.sdutacm.sdutoj.mvp.main.model.ProblemModel
+import com.sdutacm.sdutoj.mvp.main.model.ProblemModel.Companion.makeArgs
 import com.sdutacm.sdutoj.mvp.main.model.ProblemModel.Companion.MIN_PROBLEM_PID
 
 class ProblemPresenter : FragmentPresenter() {
 
+    override val dataHelper: ProblemDataHelper = ProblemDataHelper()
+
     override fun getData(args: Any?) {
-        if (args == null) {
-            super.getData(
-                ProblemModel.makeArgs(
-                    MIN_PROBLEM_PID,
-                    null,
-                    null,
-                    FragmentModel.CommonQueryParameters.CMP_GREATER_OR_EQUAL.parameters,
-                    FragmentModel.CommonQueryParameters.ORDER_ASC.parameters
-                )
+        super.getData(
+            makeArgs(
+                dataHelper.pid,
+                dataHelper.title,
+                dataHelper.source,
+                dataHelper.cmp,
+                dataHelper.order,
+                dataHelper.limit
             )
-        } else {
-            super.getData(args)
-        }
+        )
     }
 
     override fun getMoreData(args: Any) {
-        if((args as Int)== MIN_PROBLEM_PID){
-            super.getMoreData(
-                ProblemModel.makeArgs(
-                    args,
-                    null,
-                    null,
-                    FragmentModel.CommonQueryParameters.CMP_GREATER_OR_EQUAL.parameters,
-                    FragmentModel.CommonQueryParameters.ORDER_ASC.parameters
-                )
+        super.getMoreData(
+            makeArgs(
+                dataHelper.pid,
+                dataHelper.title,
+                dataHelper.source,
+                dataHelper.cmp,
+                dataHelper.order,
+                dataHelper.limit
             )
-        }else{
-            super.getMoreData(
-                ProblemModel.makeArgs(
-                    args,
-                    null,
-                    null,
-                    FragmentModel.CommonQueryParameters.CMP_GREATER.parameters,
-                    FragmentModel.CommonQueryParameters.ORDER_ASC.parameters
-                )
-            )
+        )
+    }
+
+    class ProblemDataHelper : FragmentPresenter.DataHelper() {
+
+        var pid = MIN_PROBLEM_PID
+
+        var title: String? = null
+
+        var source: String? = null
+
+        fun setPid(pid: Int): ProblemDataHelper {
+            this.pid = pid
+            return this
         }
+
+        fun setTitle(title: String): ProblemDataHelper {
+            this.title = title
+            return this
+        }
+
+        fun setSource(source: String): ProblemDataHelper {
+            this.source = source
+            return this
+        }
+
     }
 
 }

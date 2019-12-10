@@ -27,7 +27,7 @@ class ActivityModel : BaseModel<BasePresenter<MainActivity, ActivityModel>>(),
     }
 
     override fun requestData(args: Any?) {
-        val fragmentList = arrayListOf(
+        val fragmentList: ArrayList<BaseFragment> = arrayListOf(
             HomeFragment.newInstance(R.layout.fragment_tablayout),
             DiscussFragment.newInstance(R.layout.fragment_list),
             UserFragment.newInstance(R.layout.fragment_list)

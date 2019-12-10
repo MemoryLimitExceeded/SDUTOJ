@@ -9,12 +9,12 @@ interface IMainContract {
     }
 
     interface IMainView : IBaseContract.IBaseView {
+        override fun getModelFromView(): IMainModel?
         fun loadMoreData(data: Any)
     }
 
     interface IMainPresenter<V : IMainView> : IBaseContract.IBasePresenter<V> {
         fun getMoreData(args: Any)
-        fun requestMoreDataSuccess(data: Any)
     }
 
 }

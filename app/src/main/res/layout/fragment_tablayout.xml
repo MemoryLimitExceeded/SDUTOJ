@@ -14,10 +14,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                app:tabTextAppearance="@style/TabLayoutTextStyle"
-                app:tabRippleColor="@color/darkgray" />
+                android:background="@color/white"
+                app:tabRippleColor="@color/darkgray"
+                app:tabTextAppearance="@style/TabLayoutTextStyle" />
     </androidx.viewpager.widget.ViewPager>
 
-    <include layout="@layout/sublayout_viewstubs"/>
+    <include layout="@layout/sublayout_viewstubs" />
 
 </FrameLayout>
