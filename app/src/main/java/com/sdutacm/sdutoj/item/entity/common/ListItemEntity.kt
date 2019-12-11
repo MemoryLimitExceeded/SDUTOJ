@@ -13,4 +13,5 @@ abstract class ListItemEntity(private val itemType: Int) : MultiItemEntity {
     override fun getItemType(): Int {
         return itemType
     }
+
 }

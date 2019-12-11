@@ -13,9 +13,9 @@ import com.sdutacm.sdutoj.ui.widget.LoadingView
 abstract class BaseFragment : Fragment(),
     IBaseContract.IBaseView {
 
-    var loadingView: LoadingView? = null
-
     private var mContentLayoutId = 0
+
+    protected var loadingView: LoadingView? = null
 
     protected var mIsFirstCreate = true
 

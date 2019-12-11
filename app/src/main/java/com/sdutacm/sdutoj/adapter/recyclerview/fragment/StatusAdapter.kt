@@ -15,7 +15,7 @@ class StatusAdapter(data: List<StatusItemEntity>) : ListAdapter<StatusItemEntity
         addItemType(DEFAULT_TYPE, R.layout.item_status_list)
     }
 
-    enum class StatusResult(
+    private enum class StatusResult(
         @ColorRes val colorRes: Int, @DrawableRes val drawableRes: Int, val parameters: String,
         val result: Int
     ) {
@@ -56,17 +56,17 @@ class StatusAdapter(data: List<StatusItemEntity>) : ListAdapter<StatusItemEntity
     override fun convert(helper: QuickViewHolder, item: StatusItemEntity) {
         val content = item.mStatusBean
         setRunId(helper, content)
-            .setLanguageInfo(helper, content)
-            .setUserInfo(helper, content)
-            .setProblemInfo(helper, content)
-            .setTimeInfo(helper, content)
-            .setMemoryInfo(helper, content)
-            .setCodeLenInfo(helper, content)
-            .setDate(helper, content)
-            .setResult(helper, content)
+        setLanguageInfo(helper, content)
+        setUserInfo(helper, content)
+        setProblemInfo(helper, content)
+        setTimeInfo(helper, content)
+        setMemoryInfo(helper, content)
+        setCodeLenInfo(helper, content)
+        setDate(helper, content)
+        setResult(helper, content)
     }
 
-    private fun setResult(helper: QuickViewHolder, content: StatusBean): StatusAdapter {
+    private fun setResult(helper: QuickViewHolder, content: StatusBean) {
         val result: StatusResult =
             when (content.result) {
                 (StatusResult.WAITING.result) -> StatusResult.WAITING
@@ -85,62 +85,53 @@ class StatusAdapter(data: List<StatusItemEntity>) : ListAdapter<StatusItemEntity
         helper.setText(R.id.item_status_result_text, result.parameters)
             .setTextColor(R.id.item_status_result_text, getResColor(result.colorRes))
             .setImageResource(R.id.item_status_result_ic, result.drawableRes)
-        return this
     }
 
-    private fun setDate(helper: QuickViewHolder, content: StatusBean): StatusAdapter {
+    private fun setDate(helper: QuickViewHolder, content: StatusBean) {
         helper.setText(R.id.item_status_date, content.submission_time)
-        return this
     }
 
-    private fun setCodeLenInfo(helper: QuickViewHolder, content: StatusBean): StatusAdapter {
+    private fun setCodeLenInfo(helper: QuickViewHolder, content: StatusBean) {
         helper.setText(
             R.id.item_status_code_len,
             getResString(R.string.status_item_code_len).format(checkValue(content.code_length))
         )
-        return this
     }
 
-    private fun setMemoryInfo(helper: QuickViewHolder, content: StatusBean): StatusAdapter {
+    private fun setMemoryInfo(helper: QuickViewHolder, content: StatusBean) {
         helper.setText(
             R.id.item_status_memory,
             getResString(R.string.status_item_memory).format(checkValue(content.memory))
         )
-        return this
     }
 
-    private fun setTimeInfo(helper: QuickViewHolder, content: StatusBean): StatusAdapter {
+    private fun setTimeInfo(helper: QuickViewHolder, content: StatusBean) {
         helper.setText(
             R.id.item_status_time,
             getResString(R.string.status_item_time).format(checkValue(content.time))
         )
-        return this
     }
 
-    private fun setProblemInfo(helper: QuickViewHolder, content: StatusBean): StatusAdapter {
+    private fun setProblemInfo(helper: QuickViewHolder, content: StatusBean) {
         helper.setText(R.id.item_status_problem_text, content.pid.toString())
-        return this
     }
 
-    private fun setUserInfo(helper: QuickViewHolder, content: StatusBean): StatusAdapter {
+    private fun setUserInfo(helper: QuickViewHolder, content: StatusBean) {
         helper.setText(R.id.item_status_user_text, content.user_name)
-        return this
     }
 
-    private fun setLanguageInfo(helper: QuickViewHolder, content: StatusBean): StatusAdapter {
+    private fun setLanguageInfo(helper: QuickViewHolder, content: StatusBean) {
         helper.setText(
             R.id.item_status_language,
             getResString(R.string.status_item_language).format(content.language)
         )
-        return this
     }
 
-    private fun setRunId(helper: QuickViewHolder, content: StatusBean): StatusAdapter {
+    private fun setRunId(helper: QuickViewHolder, content: StatusBean) {
         helper.setText(
             R.id.item_status_run_id,
             getResString(R.string.status_item_runid).format(content.runid)
         )
-        return this
     }
 
     private fun checkValue(value: Int): String {

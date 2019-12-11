@@ -16,7 +16,10 @@ class ContestAdapter(data: List<ContestItemEntity>) : ListAdapter<ContestItemEnt
 
     }
 
-    enum class ContentType(val typeId: Int, val typeString: String, @ColorRes val colorRes: Int) {
+    private enum class ContentType(
+        val typeId: Int,
+        val typeString: String, @ColorRes val colorRes: Int
+    ) {
         PRIVATE(1, "Private", R.color.red),
         REGISTER(2, "Register", R.color.blue),
         PUBLIC(3, "Public", R.color.green)
@@ -29,38 +32,33 @@ class ContestAdapter(data: List<ContestItemEntity>) : ListAdapter<ContestItemEnt
     override fun convert(helper: QuickViewHolder, item: ContestItemEntity) {
         val content = item.mContestBean
         setTitle(helper, content)
-            .setCID(helper, content)
-            .setContestStatus(helper, content)
-            .setContentType(helper, content)
-            .setRegisterDate(helper, content)
-            .setRunDate(helper, content)
+        setCID(helper, content)
+        setContestStatus(helper, content)
+        setContentType(helper, content)
+        setRegisterDate(helper, content)
+        setRunDate(helper, content)
     }
 
-    private fun setRunDate(helper: QuickViewHolder, content: ContestBean): ContestAdapter {
+    private fun setRunDate(helper: QuickViewHolder, content: ContestBean) {
         helper.setText(
             R.id.item_contest_run_date_text,
             content.start_time + "\n" + content.end_time
-        ).setImageResource(R.id.item_contest_run_date_ic,R.drawable.ic_content_run_date)
-        return this
+        )
     }
 
-    private fun setRegisterDate(helper: QuickViewHolder, content: ContestBean): ContestAdapter {
+    private fun setRegisterDate(helper: QuickViewHolder, content: ContestBean) {
         if (content.register_start_time != DEFAULT_DATE && content.register_end_time != DEFAULT_DATE
         ) {
             helper.setText(
                 R.id.item_contest_register_date_text,
                 content.register_start_time + "\n" + content.register_end_time
-            ).setVisible(R.id.item_contest_register_date_text, true)
-                .setImageResource(R.id.item_contest_register_date_ic,R.drawable.ic_contest_register_date)
-                .setGone(R.id.item_contest_register_date_ic,true)
+            ).setGone(R.id.item_contest_register_date, true)
         } else {
-            helper.setGone(R.id.item_contest_register_date_text, false)
-                .setGone(R.id.item_contest_register_date_ic,false)
+            helper.setGone(R.id.item_contest_register_date, false)
         }
-        return this
     }
 
-    private fun setContentType(helper: QuickViewHolder, content: ContestBean): ContestAdapter {
+    private fun setContentType(helper: QuickViewHolder, content: ContestBean) {
         val type = when (content.type) {
             (ContentType.PRIVATE.typeId) -> ContentType.PRIVATE
             (ContentType.REGISTER.typeId) -> ContentType.REGISTER
@@ -69,10 +67,9 @@ class ContestAdapter(data: List<ContestItemEntity>) : ListAdapter<ContestItemEnt
         }
         helper.setText(R.id.item_contest_type, type.typeString)
             .setTextColor(R.id.item_contest_type, getResColor(type.colorRes))
-        return this
     }
 
-    private fun setContestStatus(helper: QuickViewHolder, content: ContestBean): ContestAdapter {
+    private fun setContestStatus(helper: QuickViewHolder, content: ContestBean) {
         if (System.currentTimeMillis() >= transToTimeStamp(content.start_time) && System.currentTimeMillis() <= transToTimeStamp(
                 content.end_time
             )
@@ -83,18 +80,14 @@ class ContestAdapter(data: List<ContestItemEntity>) : ListAdapter<ContestItemEnt
         } else {
             helper.setImageResource(R.id.item_contest_status, R.drawable.ic_contest_status_complete)
         }
-        return this
     }
 
-    private fun setCID(helper: QuickViewHolder, content: ContestBean): ContestAdapter {
+    private fun setCID(helper: QuickViewHolder, content: ContestBean) {
         helper.setText(R.id.item_contest_cid_text, content.cid.toString())
-            .setImageResource(R.id.item_contest_cid_ic, R.drawable.ic_contest_cid)
-        return this
     }
 
-    private fun setTitle(helper: QuickViewHolder, content: ContestBean): ContestAdapter {
+    private fun setTitle(helper: QuickViewHolder, content: ContestBean) {
         helper.setText(R.id.item_contest_title, content.name)
-        return this
     }
 
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         style="@style/NormalCardView">
 
     <LinearLayout
@@ -31,7 +31,6 @@
                     android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/item_status_user_ic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
@@ -53,7 +52,6 @@
                     android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/item_status_problem_ic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
@@ -106,8 +104,8 @@
                         android:id="@+id/item_status_result_ic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="4dp"
-                        android:layout_gravity="center_vertical"/>
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="4dp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/item_status_result_text"
@@ -120,4 +118,4 @@
 
     </LinearLayout>
 
-</com.google.android.material.card.MaterialCardView>
+</androidx.cardview.widget.CardView>

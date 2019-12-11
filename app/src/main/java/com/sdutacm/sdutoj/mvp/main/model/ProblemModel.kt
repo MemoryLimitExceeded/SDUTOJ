@@ -28,9 +28,9 @@ class ProblemModel : FragmentModel() {
         @JvmStatic
         fun makeArgs(
             pid: Int,
-            title: String? = null,
-            source: String? = null,
-            cmp: String? = null,
+            title: String?,
+            source: String?,
+            cmp: String,
             order: String,
             limit: Int
         ): Map<String, Any> {

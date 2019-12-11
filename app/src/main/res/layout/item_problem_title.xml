@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/NormalCardView">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/item_problem_title_content"
+                style="@style/TitleTextView" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/item_problem_title_tl"
+                style="@style/NormalTextView"
+                android:layout_below="@id/item_problem_title_content" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/item_problem_title_ml"
+                style="@style/NormalTextView"
+                android:layout_below="@id/item_problem_title_tl" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/item_problem_title_ac_ic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/item_problem_title_content"
+                android:layout_marginEnd="4dp"
+                android:layout_toStartOf="@id/item_problem_title_ac"
+                android:src="@drawable/ic_solution_result_ac" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/item_problem_title_ac"
+                style="@style/NormalTextView"
+                android:layout_below="@id/item_problem_title_content"
+                android:layout_alignParentEnd="true" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/item_problem_title_su_ic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/item_problem_title_ac_ic"
+                android:layout_marginEnd="4dp"
+                android:layout_toStartOf="@id/item_problem_title_su"
+                android:src="@drawable/ic_commit" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/item_problem_title_su"
+                style="@style/NormalTextView"
+                android:layout_below="@id/item_problem_title_ac"
+                android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

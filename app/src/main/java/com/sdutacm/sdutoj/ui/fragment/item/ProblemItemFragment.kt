@@ -5,6 +5,7 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import com.sdutacm.sdutoj.adapter.recyclerview.itemfragment.ProblemItemAdapter
 import com.sdutacm.sdutoj.item.bean.ProblemBean
+import com.sdutacm.sdutoj.item.entity.common.ListItemEntity.Companion.DEFAULT_TYPE
 import com.sdutacm.sdutoj.item.entity.itemfragment.SingleProblemEntity
 import com.sdutacm.sdutoj.item.entity.itemfragment.SingleProblemEntity.Companion.DESCRIPTION_TYPE
 import com.sdutacm.sdutoj.item.entity.itemfragment.SingleProblemEntity.Companion.HINT_TYPE
@@ -49,38 +50,37 @@ class ProblemItemFragment : ItemFragment<SingleProblemEntity>() {
     }
 
     override fun updateData(data: Any?) {
+        this.data = (data as ArrayList<*>).get(0) as Parcelable
+        setData()
     }
 
     override fun loadMoreData(data: Any) {
-        this.data = (data as ArrayList<*>).get(0) as Parcelable
-        setData()
     }
 
     override fun getData() {
         val args = mPresenter?.dataHelper as ProblemPresenter.ProblemDataHelper
         args.setPid((data as ProblemBean).pid)
-        mPresenter?.getMoreData(args)
+        mPresenter?.getData(args)
     }
 
     override fun setData() {
         val bean = data as ProblemBean
-        mAdpater.setData(0, SingleProblemEntity(bean.title, TITLE_TYPE))
-        mAdpater.setData(1, SingleProblemEntity(bean.description, DESCRIPTION_TYPE))
-        mAdpater.setData(2, SingleProblemEntity(bean.input, INPUT_TYPE))
-        mAdpater.setData(3, SingleProblemEntity(bean.output, OUTPUT_TYPE))
-        mAdpater.setData(4, SingleProblemEntity(bean.sample_input, SAMPLE_INPUT_TYPE))
-        mAdpater.setData(5, SingleProblemEntity(bean.sample_output, SAMPLE_OUTPUT_TYPE))
-        mAdpater.setData(6, SingleProblemEntity(bean.hint, HINT_TYPE))
-        mAdpater.setData(7, SingleProblemEntity(bean.source, SOURCE_TYPE))
+        val newDataList = ArrayList<SingleProblemEntity>()
+        newDataList.add(SingleProblemEntity(bean.title, TITLE_TYPE))
+        newDataList.add(SingleProblemEntity(bean.description, DESCRIPTION_TYPE))
+        newDataList.add(SingleProblemEntity(bean.input, INPUT_TYPE))
+        newDataList.add(SingleProblemEntity(bean.output, OUTPUT_TYPE))
+        newDataList.add(SingleProblemEntity(bean.sample_input, SAMPLE_INPUT_TYPE))
+        newDataList.add(SingleProblemEntity(bean.sample_output, SAMPLE_OUTPUT_TYPE))
+        newDataList.add(SingleProblemEntity(bean.hint, HINT_TYPE))
+        newDataList.add(SingleProblemEntity(bean.source, SOURCE_TYPE))
+        mAdpater.setNewData(newDataList)
         hideLoading()
     }
 
     override fun initAdapter() {
         showLoading()
-        mAdpater = ProblemItemAdapter(ArrayList(8))
-        for(i in 1..8){
-            mAdpater.addData(SingleProblemEntity("",0))
-        }
+        mAdpater = ProblemItemAdapter(ArrayList())
     }
 
 }

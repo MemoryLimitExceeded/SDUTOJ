@@ -27,7 +27,7 @@ class ContestModel : FragmentModel() {
             cid: Int?,
             name: String?,
             type: Int?,
-            cmp: String?,
+            cmp: String,
             order: String,
             limit: Int
         ): Map<String, Any> {

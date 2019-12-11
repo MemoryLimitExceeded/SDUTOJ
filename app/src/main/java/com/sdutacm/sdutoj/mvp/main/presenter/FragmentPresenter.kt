@@ -7,7 +7,7 @@ import com.sdutacm.sdutoj.mvp.main.common.FragmentModel
 open class FragmentPresenter() : BasePresenter<IMainContract.IMainView, FragmentModel>(),
     IMainContract.IMainPresenter<IMainContract.IMainView> {
 
-    protected var mType: Int = 0
+    private var mType: Int = 0
 
     open val dataHelper: DataHelper = DataHelper()
 
@@ -56,7 +56,7 @@ open class FragmentPresenter() : BasePresenter<IMainContract.IMainView, Fragment
 
     open class DataHelper {
 
-        var cmp: String? = null
+        var cmp: String = FragmentModel.CommonQueryParameters.CMP_EQUAL.parameters
 
         var order: String = FragmentModel.CommonQueryParameters.ORDER_DESC.parameters
 

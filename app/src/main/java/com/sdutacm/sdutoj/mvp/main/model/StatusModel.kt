@@ -40,7 +40,7 @@ class StatusModel : FragmentModel() {
             cid: Int?,
             result: Int?,
             language: Int?,
-            cmp: String?,
+            cmp: String,
             order: String,
             limit: Int
         ): Map<String, Any> {

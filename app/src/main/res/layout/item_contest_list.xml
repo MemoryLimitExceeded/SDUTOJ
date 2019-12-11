@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         style="@style/NormalCardView">
 
     <RelativeLayout
@@ -8,11 +8,10 @@
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/item_contest_title"
-                style="@style/NormalTextView"
+                style="@style/TitleTextView"
                 android:layout_width="match_parent"
                 android:layout_marginEnd="6dp"
-                android:layout_toStartOf="@id/item_contest_status"
-                android:textSize="16sp" />
+                android:layout_toStartOf="@id/item_contest_status" />
 
         <LinearLayout
                 android:id="@+id/item_contest_cid"
@@ -22,10 +21,10 @@
                 android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/item_contest_cid_ic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp" />
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_contest_cid" />
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/item_contest_cid_text"
@@ -55,10 +54,10 @@
                 android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/item_contest_run_date_ic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp" />
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_content_run_date" />
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/item_contest_run_date_text"
@@ -67,6 +66,7 @@
         </LinearLayout>
 
         <LinearLayout
+                android:id="@+id/item_contest_register_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/item_contest_type"
@@ -76,10 +76,10 @@
                 android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/item_contest_register_date_ic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp" />
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_contest_register_date" />
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/item_contest_register_date_text"
@@ -88,4 +88,4 @@
 
     </RelativeLayout>
 
-</com.google.android.material.card.MaterialCardView>
+</androidx.cardview.widget.CardView>
