@@ -2,7 +2,6 @@ package com.sdutacm.sdutoj.mvp.main.model
 
 import android.content.ContentValues
 import android.database.Cursor
-import android.util.SparseArray
 import com.sdutacm.sdutoj.data.database.ContestTable
 import com.sdutacm.sdutoj.item.bean.ContestBean
 import com.sdutacm.sdutoj.mvp.main.common.FragmentModel
@@ -16,20 +15,31 @@ class ContestModel : FragmentModel() {
 
         const val CONTEST_INTERVAL = 50
 
+        private const val CONTEST_TYPE = 0
+
+        private const val CONTEST_DETAIL_TYPE = 1
+
+        private const val QUERY_PARAMETERS_REQUEST_TYPE = "request_type"
+
         private const val QUERY_PARAMETERS_CID = "cid"
 
         private const val QUERY_PARAMETERS_NAME = "name"
 
         private const val QUERY_PARAMETERS_TYPE = "type"
 
+        private const val QUERY_PARAMETERS_USER_NAME = "user_name"
+
+        private const val QUERY_PARAMETERS_PASSWORD = "password"
+
         @JvmStatic
         fun makeArgs(
             cid: Int?,
             name: String?,
             type: Int?,
-            cmp: String?,
+            cmp: String,
             order: String,
-            limit: Int
+            limit: Int,
+            requestType: Int = CONTEST_TYPE
         ): Map<String, Any> {
             val args = makeArgs(cmp, order, limit)
             if (cid != null) {
@@ -41,32 +51,75 @@ class ContestModel : FragmentModel() {
             if (type != null) {
                 args[QUERY_PARAMETERS_TYPE] = type
             }
+            args[QUERY_PARAMETERS_REQUEST_TYPE] = requestType
+            return args
+        }
+
+        @JvmStatic
+        fun makeArgs(
+            cid: Int,
+            userName: String?,
+            password: String?,
+            requestType: Int = CONTEST_DETAIL_TYPE
+        ): Map<String, Any> {
+            val args = makeArgs(
+                CommonQueryParameters.CMP_EQUAL.parameters,
+                CommonQueryParameters.ORDER_ASC.parameters,
+                1
+            )
+            args[QUERY_PARAMETERS_CID] = cid
+            if (userName != null)
+                args[QUERY_PARAMETERS_USER_NAME] = userName
+            if (password != null) {
+                args[QUERY_PARAMETERS_PASSWORD] = password
+            }
+            args[QUERY_PARAMETERS_REQUEST_TYPE] = requestType
             return args
         }
 
     }
 
     override fun requestDataFromNetWork(args: HashMap<String, Any>) {
-        mService.getContest(args).enqueue(object : Callback<List<ContestBean>> {
-            override fun onFailure(call: Call<List<ContestBean>>, t: Throwable) {
-                mPresenter?.requestDataError(args)
-            }
-
-            override fun onResponse(
-                call: Call<List<ContestBean>>,
-                response: Response<List<ContestBean>>
-            ) {
-                val contestBeans = response.body()
-                if (contestBeans != null) {
-                    for (item in contestBeans) {
-                        updateDatabase(item)
-                    }
-                    requestSuccess(contestBeans)
-                } else {
-                    requestSuccess(EMPTY_DATA)
+        if (args[QUERY_PARAMETERS_REQUEST_TYPE] == CONTEST_TYPE) {
+            mService.getContest(args).enqueue(object : Callback<List<ContestBean>> {
+                override fun onFailure(call: Call<List<ContestBean>>, t: Throwable) {
+                    mPresenter?.requestDataError(args)
                 }
-            }
-        })
+
+                override fun onResponse(
+                    call: Call<List<ContestBean>>,
+                    response: Response<List<ContestBean>>
+                ) {
+                    val contestBeans = response.body()
+                    if (contestBeans != null && contestBeans.isNotEmpty()) {
+                        for (item in contestBeans) {
+                            updateDatabase(item)
+                        }
+                        requestSuccess(contestBeans)
+                    } else {
+                        requestSuccess(EMPTY_DATA)
+                    }
+                }
+            })
+        } else {
+            mService.getContestDetail(args).enqueue(object : Callback<List<ContestBean>> {
+                override fun onFailure(call: Call<List<ContestBean>>, t: Throwable) {
+                    mPresenter?.requestDataError(args)
+                }
+
+                override fun onResponse(
+                    call: Call<List<ContestBean>>,
+                    response: Response<List<ContestBean>>
+                ) {
+                    val contestBeans = response.body()
+                    if (contestBeans != null && contestBeans.isNotEmpty()) {
+                        requestSuccess(contestBeans[0])
+                    } else {
+                        requestSuccess(EMPTY_DATA)
+                    }
+                }
+            })
+        }
     }
 
     override fun requestDataFromDB(args: HashMap<String, Any>) {
@@ -78,7 +131,7 @@ class ContestModel : FragmentModel() {
         if (args[QUERY_PARAMETERS_CID] != null) {
             selectionArgs.add(args[QUERY_PARAMETERS_CID].toString())
             selection = addSelection(selection, ContestTable.CID)
-            selection = addCmdParameters((args[QUERY_PARAMETERS_CMD] as String), selection)
+            selection = addCmdParameters((args[QUERY_PARAMETERS_CMP] as String), selection)
         }
         if (args[QUERY_PARAMETERS_NAME] != null) {
             selectionArgs.add(args[QUERY_PARAMETERS_NAME].toString())

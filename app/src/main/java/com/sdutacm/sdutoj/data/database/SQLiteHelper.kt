@@ -12,6 +12,7 @@ class SQLiteHelper private constructor(context: Context) :
         private const val PROBLEM_TABLE =
             "create table " + ProblemTable.TABLE_NAME + "(" +
                     ProblemTable.PID + " int primary key," +
+                    ProblemTable.TYPE + " int not null," +
                     ProblemTable.TITLE + " varchar(50) not null," +
                     ProblemTable.TIME_LIMIT + " int not null," +
                     ProblemTable.MEMORY_LIMIT + " int not null," +
@@ -44,14 +45,14 @@ class SQLiteHelper private constructor(context: Context) :
 
         private const val CONTEST_TABLE =
             "create table " + ContestTable.TABLE_NAME + "(" +
-                ContestTable.CID + " int primary key," +
-                ContestTable.NAME + " varchar(30) not null," +
-                ContestTable.TYPE + " int nut null," +
-                ContestTable.START_TIME + " varchar(30) not null," +
-                ContestTable.END_TIME + " varchar(30) not null," +
-                ContestTable.REGISTER_START_TIME + " varchar(30) not null," +
-                ContestTable.REGISTER_END_TIME + " varchar(30) not null" +
-                ")"
+                    ContestTable.CID + " int primary key," +
+                    ContestTable.NAME + " varchar(30) not null," +
+                    ContestTable.TYPE + " int nut null," +
+                    ContestTable.START_TIME + " varchar(30) not null," +
+                    ContestTable.END_TIME + " varchar(30) not null," +
+                    ContestTable.REGISTER_START_TIME + " varchar(30) not null," +
+                    ContestTable.REGISTER_END_TIME + " varchar(30) not null" +
+                    ")"
 
         @Volatile
         private var instance: SQLiteHelper? = null

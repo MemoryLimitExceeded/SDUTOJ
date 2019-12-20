@@ -18,4 +18,7 @@ interface INetApiService {
     @GET("Contest")
     fun getContest(@QueryMap map: MutableMap<String, Any>): Call<List<ContestBean>>
 
+    @GET("ContestDetail")
+    fun getContestDetail(@QueryMap map: MutableMap<String, Any>): Call<List<ContestBean>>
+
 }

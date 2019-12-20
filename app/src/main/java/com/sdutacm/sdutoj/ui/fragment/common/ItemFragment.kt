@@ -15,7 +15,7 @@ import com.sdutacm.sdutoj.item.entity.common.ListItemEntity
 import com.sdutacm.sdutoj.mvp.base.BaseFragment
 import com.sdutacm.sdutoj.mvp.main.IMainContract
 
-abstract class ItemFragment<T : ListItemEntity> : BaseFragment(), IMainContract.IMainView{
+abstract class ItemFragment<T : ListItemEntity> : BaseFragment(), IMainContract.IMainView {
 
     private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
 
@@ -25,7 +25,7 @@ abstract class ItemFragment<T : ListItemEntity> : BaseFragment(), IMainContract.
 
     protected var data: Parcelable? = null
 
-    protected lateinit var mAdpater: ListAdapter<T>
+    protected lateinit var mAdapter: ListAdapter<T>
 
     companion object {
 
@@ -45,8 +45,12 @@ abstract class ItemFragment<T : ListItemEntity> : BaseFragment(), IMainContract.
 
     protected abstract fun initAdapter()
 
-    private fun setRefreshing(refreshing: Boolean) {
+    protected fun setRefreshing(refreshing: Boolean) {
         mSwipeRefreshLayout.isRefreshing = refreshing
+    }
+
+    protected fun getRefreshing(): Boolean {
+        return mSwipeRefreshLayout.isRefreshing
     }
 
     override fun hideLoading() {
@@ -80,7 +84,7 @@ abstract class ItemFragment<T : ListItemEntity> : BaseFragment(), IMainContract.
     override fun initView(rootView: View) {
         mRecyclerView = rootView.findViewById(R.id.item_fragment_recyclerview)
         mSwipeRefreshLayout = rootView.findViewById(R.id.item_fragment_swiperefreshlayout)
-        mAdpater.bindToRecyclerView(mRecyclerView)
+        mAdapter.bindToRecyclerView(mRecyclerView)
         mRecyclerView.layoutManager = LinearLayoutManager(context)
         mSwipeRefreshLayout.setOnRefreshListener(mRefreshListener)
         mSwipeRefreshLayout.setColorSchemeResources(R.color.blue)
@@ -97,20 +101,9 @@ abstract class ItemFragment<T : ListItemEntity> : BaseFragment(), IMainContract.
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        (activity as DetachItemFragmentCallback?)?.exit()
-    }
-
     override fun onlyFirstCreate() {
         initAdapter()
         super.onlyFirstCreate()
-    }
-
-    interface DetachItemFragmentCallback{
-
-        fun exit()
-
     }
 
 }

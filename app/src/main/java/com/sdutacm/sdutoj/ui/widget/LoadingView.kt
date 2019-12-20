@@ -17,6 +17,8 @@ class LoadingView(rootView: View, private val mRetryButtonListener: View.OnClick
 
     private var mStayTunedView: View
 
+    private var mNoPermissionView: View
+
     private var mIsFirstSetLoadingView = true
 
     private var mIsFirstSetDataErrorView = true
@@ -25,11 +27,14 @@ class LoadingView(rootView: View, private val mRetryButtonListener: View.OnClick
 
     private var mIsFirstSetStayTunedView = true
 
+    private var mIsFirstSetNoPermissionView = true
+
     init {
         mLoadingView = rootView.findViewById(R.id.view_stub_loading)
         mDataErrorView = rootView.findViewById(R.id.view_stub_get_data_error)
         mNoDataView = rootView.findViewById(R.id.view_stub_no_data)
         mStayTunedView = rootView.findViewById(R.id.view_stub_stay_tuned)
+        mNoPermissionView = rootView.findViewById(R.id.view_stub_no_permission)
     }
 
     fun loadingViewSetVisibility(visibility: Int) {
@@ -83,6 +88,19 @@ class LoadingView(rootView: View, private val mRetryButtonListener: View.OnClick
             mIsFirstSetStayTunedView = false
         }
         mStayTunedView.visibility = visibility
+    }
+
+    fun noPermissionView(visibility: Int) {
+        if (mIsFirstSetNoPermissionView) {
+            mNoPermissionView = (mNoPermissionView as ViewStub).inflate()
+            val imageView: AppCompatImageView =
+                mNoPermissionView.findViewById(R.id.loading_imageview)
+            imageView.setImageResource(R.drawable.ic_no_permission)
+            val textView: AppCompatTextView = mNoPermissionView.findViewById(R.id.loading_textview)
+            textView.setText(R.string.no_permission_hint)
+            mIsFirstSetNoPermissionView = false
+        }
+        mNoPermissionView.visibility = visibility
     }
 
 }

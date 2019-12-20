@@ -62,6 +62,11 @@ abstract class BaseFragment : Fragment(),
         loadingView?.loadingViewSetVisibility(View.VISIBLE)
     }
 
+    protected fun showNoPermission(){
+        loadingView?.loadingViewSetVisibility(View.GONE)
+        loadingView?.noPermissionView(View.VISIBLE)
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         initPresenter()

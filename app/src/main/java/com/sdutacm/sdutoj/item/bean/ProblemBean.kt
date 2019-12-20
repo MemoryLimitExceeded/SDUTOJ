@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class ProblemBean constructor(
+    val type: Int = 0,
     val pid: Int = 0,
     val title: String = "",
     val time_limit: Int = 0,
@@ -19,7 +20,9 @@ data class ProblemBean constructor(
     val accepted: Int = 0,
     val submission: Int = 0
 ) : Parcelable {
+
     constructor(parcel: Parcel) : this(
+        parcel.readInt(),
         parcel.readInt(),
         parcel.readString() ?: "",
         parcel.readInt(),
@@ -38,6 +41,7 @@ data class ProblemBean constructor(
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(type)
         parcel.writeInt(pid)
         parcel.writeString(title)
         parcel.writeInt(time_limit)
@@ -67,4 +71,5 @@ data class ProblemBean constructor(
             return arrayOfNulls(size)
         }
     }
+
 }

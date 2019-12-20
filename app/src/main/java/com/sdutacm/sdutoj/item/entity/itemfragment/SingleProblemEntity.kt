@@ -2,7 +2,7 @@ package com.sdutacm.sdutoj.item.entity.itemfragment
 
 import com.sdutacm.sdutoj.item.entity.common.ListItemEntity
 
-class SingleProblemEntity(val content: String, itemType: Int) : ListItemEntity(itemType) {
+class SingleProblemEntity(var mListContent: ArrayList<String>, itemType: Int) : ListItemEntity(itemType) {
 
     companion object {
 

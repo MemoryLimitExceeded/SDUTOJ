@@ -1,7 +1,5 @@
 package com.sdutacm.sdutoj.ui.activity
 
-import android.view.View
-import android.view.ViewGroup
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.sdutacm.sdutoj.R
@@ -11,10 +9,8 @@ import com.sdutacm.sdutoj.mvp.main.model.ActivityModel.ActivityDataHelper
 import com.sdutacm.sdutoj.mvp.main.IMainContract
 import com.sdutacm.sdutoj.mvp.main.model.ActivityModel
 import com.sdutacm.sdutoj.mvp.main.presenter.ActivityPresenter
-import com.sdutacm.sdutoj.ui.fragment.common.ItemFragment
 
-class MainActivity : BaseActivity<ActivityPresenter>(),
-    IMainContract.IMainView, ItemFragment.DetachItemFragmentCallback {
+class MainActivity : BaseActivity<ActivityPresenter>(), IMainContract.IMainView {
 
     private lateinit var mTabLayout: TabLayout
 
@@ -23,8 +19,6 @@ class MainActivity : BaseActivity<ActivityPresenter>(),
     private lateinit var mViewPagerAdapter: ViewPagerAdapter
 
     private lateinit var mViewData: ActivityDataHelper
-
-    private lateinit var mContainer: ViewGroup
 
     override fun loadMoreData(data: Any) {
     }
@@ -40,7 +34,6 @@ class MainActivity : BaseActivity<ActivityPresenter>(),
     override fun initView() {
         mTabLayout = findViewById(R.id.title_tablayout)
         mViewPager = findViewById(R.id.content_viewpager)
-        mContainer = findViewById(R.id.fragment_container)
         initViewPagerAdapter()
         initViewPager()
         initTabLayout()
@@ -73,14 +66,6 @@ class MainActivity : BaseActivity<ActivityPresenter>(),
 
     private fun initTabLayout() {
         mTabLayout.setupWithViewPager(mViewPager)
-    }
-
-    fun getFragmentContainer(): ViewGroup {
-        return mContainer
-    }
-
-    override fun exit(){
-        mContainer.visibility = View.GONE
     }
 
 }

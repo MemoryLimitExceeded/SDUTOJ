@@ -27,4 +27,10 @@
             android:layout_height="match_parent"
             android:layout="@layout/sublayout_loading" />
 
+    <ViewStub
+            android:id="@+id/view_stub_no_permission"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout="@layout/sublayout_loading" />
+
 </FrameLayout>

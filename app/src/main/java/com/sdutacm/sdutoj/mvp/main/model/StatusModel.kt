@@ -40,7 +40,7 @@ class StatusModel : FragmentModel() {
             cid: Int?,
             result: Int?,
             language: Int?,
-            cmp: String?,
+            cmp: String,
             order: String,
             limit: Int
         ): Map<String, Any> {
@@ -103,7 +103,7 @@ class StatusModel : FragmentModel() {
         if (args[QUERY_PARAMETERS_RUN_ID] != null) {
             selectionArgs.add(args[QUERY_PARAMETERS_RUN_ID].toString())
             selection = addSelection(selection, SolutionTable.RUN_ID)
-            selection = addCmdParameters((args[QUERY_PARAMETERS_CMD] as String), selection)
+            selection = addCmdParameters((args[QUERY_PARAMETERS_CMP] as String), selection)
         }
         if (args[QUERY_PARAMETERS_UID] != null) {
             selectionArgs.add(args[QUERY_PARAMETERS_UID].toString())

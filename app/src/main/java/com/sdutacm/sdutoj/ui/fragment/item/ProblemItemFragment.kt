@@ -14,14 +14,20 @@ import com.sdutacm.sdutoj.item.entity.itemfragment.SingleProblemEntity.Companion
 import com.sdutacm.sdutoj.item.entity.itemfragment.SingleProblemEntity.Companion.SAMPLE_OUTPUT_TYPE
 import com.sdutacm.sdutoj.item.entity.itemfragment.SingleProblemEntity.Companion.SOURCE_TYPE
 import com.sdutacm.sdutoj.item.entity.itemfragment.SingleProblemEntity.Companion.TITLE_TYPE
+import com.sdutacm.sdutoj.mvp.base.BaseModel.Companion.EMPTY_DATA
 import com.sdutacm.sdutoj.mvp.main.IMainContract
 import com.sdutacm.sdutoj.mvp.main.model.ProblemModel
 import com.sdutacm.sdutoj.mvp.main.presenter.ProblemPresenter
 import com.sdutacm.sdutoj.ui.fragment.common.ItemFragment
+import java.lang.StringBuilder
 
 class ProblemItemFragment : ItemFragment<SingleProblemEntity>() {
 
+    private var mProblemId: String? = null
+
     companion object {
+
+        const val NEED_REQUEST_BEAN_TYPE = 1
 
         @JvmStatic
         fun newInstance(@LayoutRes contentLayout: Int, problemBean: ProblemBean): ProblemItemFragment {
@@ -34,10 +40,17 @@ class ProblemItemFragment : ItemFragment<SingleProblemEntity>() {
 
     override fun initView(rootView: View) {
         super.initView(rootView)
-        setData()
+        if (!isNeedRequest()) {
+            setData()
+        } else {
+            showLoading()
+        }
     }
 
     override fun initData() {
+        if (isNeedRequest()) {
+            getData()
+        }
     }
 
     override fun getModelFromView(): IMainContract.IMainModel? {
@@ -52,35 +65,59 @@ class ProblemItemFragment : ItemFragment<SingleProblemEntity>() {
     }
 
     override fun loadMoreData(data: Any) {
-        this.data = (data as ArrayList<*>).get(0) as Parcelable
-        setData()
+        if (data == EMPTY_DATA) {
+            showNoPermission()
+        } else {
+            this.data = (data as ArrayList<*>)[0] as Parcelable
+            setData()
+        }
     }
 
     override fun getData() {
-        val args = mPresenter?.dataHelper as ProblemPresenter.ProblemDataHelper
-        args.setPid((data as ProblemBean).pid)
+        val args = ProblemPresenter.ProblemDataHelper()
+            .setPid((data as ProblemBean).pid)
         mPresenter?.getMoreData(args)
     }
 
     override fun setData() {
         val bean = data as ProblemBean
-        mAdpater.setData(0, SingleProblemEntity(bean.title, TITLE_TYPE))
-        mAdpater.setData(1, SingleProblemEntity(bean.description, DESCRIPTION_TYPE))
-        mAdpater.setData(2, SingleProblemEntity(bean.input, INPUT_TYPE))
-        mAdpater.setData(3, SingleProblemEntity(bean.output, OUTPUT_TYPE))
-        mAdpater.setData(4, SingleProblemEntity(bean.sample_input, SAMPLE_INPUT_TYPE))
-        mAdpater.setData(5, SingleProblemEntity(bean.sample_output, SAMPLE_OUTPUT_TYPE))
-        mAdpater.setData(6, SingleProblemEntity(bean.hint, HINT_TYPE))
-        mAdpater.setData(7, SingleProblemEntity(bean.source, SOURCE_TYPE))
+        val title = when {
+            (mProblemId != null) -> mProblemId + ". " + bean.title
+            else -> bean.title
+        }
+        val newDataList = ArrayList<SingleProblemEntity>()
+        newDataList.add(
+            SingleProblemEntity(
+                arrayListOf(
+                    title,
+                    bean.time_limit.toString(),
+                    bean.memory_limit.toString(),
+                    bean.accepted.toString(),
+                    bean.submission.toString()
+                ), TITLE_TYPE
+            )
+        )
+        newDataList.add(SingleProblemEntity(arrayListOf(bean.description), DESCRIPTION_TYPE))
+        newDataList.add(SingleProblemEntity(arrayListOf(bean.input), INPUT_TYPE))
+        newDataList.add(SingleProblemEntity(arrayListOf(bean.output), OUTPUT_TYPE))
+        newDataList.add(SingleProblemEntity(arrayListOf(bean.sample_input), SAMPLE_INPUT_TYPE))
+        newDataList.add(SingleProblemEntity(arrayListOf(bean.sample_output), SAMPLE_OUTPUT_TYPE))
+        newDataList.add(SingleProblemEntity(arrayListOf(bean.hint), HINT_TYPE))
+        newDataList.add(SingleProblemEntity(arrayListOf(bean.source), SOURCE_TYPE))
+        mAdapter.setNewData(newDataList)
         hideLoading()
     }
 
     override fun initAdapter() {
-        showLoading()
-        mAdpater = ProblemItemAdapter(ArrayList(8))
-        for(i in 1..8){
-            mAdpater.addData(SingleProblemEntity("",0))
-        }
+        mAdapter = ProblemItemAdapter(ArrayList())
+    }
+
+    fun setProblemId(problemId: String) {
+        this.mProblemId = problemId
+    }
+
+    private fun isNeedRequest(): Boolean {
+        return (data as ProblemBean).type == NEED_REQUEST_BEAN_TYPE
     }
 
 }

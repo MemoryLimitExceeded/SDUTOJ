@@ -34,18 +34,16 @@ abstract class FragmentModel : BaseModel<FragmentPresenter>(),
 
         const val QUERY_REQUEST_MAX_LIMIT = 1000
 
-        const val QUERY_PARAMETERS_CMD = "cmp"
+        const val QUERY_PARAMETERS_CMP = "cmp"
 
         const val QUERY_PARAMETERS_ORDER = "order"
 
         const val QUERY_PARAMETERS_LIMIT = "limit"
 
         @JvmStatic
-        fun makeArgs(cmp: String?, order: String, limit: Int): HashMap<String, Any> {
+        fun makeArgs(cmp: String, order: String, limit: Int): HashMap<String, Any> {
             val args = HashMap<String, Any>()
-            if (cmp != null) {
-                args[QUERY_PARAMETERS_CMD] = cmp
-            }
+            args[QUERY_PARAMETERS_CMP] = cmp
             args[QUERY_PARAMETERS_ORDER] = order
             args[QUERY_PARAMETERS_LIMIT] = limit
             return args

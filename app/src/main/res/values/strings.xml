@@ -6,6 +6,7 @@
     <string name="data_loading">正在加载中，请稍后 ( • ̀ω•́ )✧</string>
     <string name="get_data_success_hint">数据已经更新</string>
     <string name="retry">重试</string>
+    <string name="no_permission_hint">你没有权限查看</string>
 
     <string name="problem_item_title">%1$d. %2$s</string>
     <string name="problem_item_limit">Time Limit: %1$d ms\nMemory Limit: %2$d kb</string>
@@ -16,5 +17,15 @@
     <string name="status_item_time">Time：%1$s ms</string>
     <string name="status_item_memory">Memory: %1$s kb</string>
     <string name="status_item_code_len">Code Len：%1$s B</string>
+
+    <string name="problem_item_fragment_title_tl">Time Limit: %1$s ms</string>
+    <string name="problem_item_fragment_title_ml">Memory Limit: %1$s kb</string>
+    <string name="problem_item_fragment_input_description">Description</string>
+    <string name="problem_item_fragment_input_title">Input</string>
+    <string name="problem_item_fragment_output_title">Output</string>
+    <string name="problem_item_fragment_si_title">Sample Input</string>
+    <string name="problem_item_fragment_so_title">Sample Output</string>
+    <string name="problem_item_fragment_hint_title">Hint</string>
+    <string name="problem_item_fragment_source_title">Source</string>
 
 </resources>

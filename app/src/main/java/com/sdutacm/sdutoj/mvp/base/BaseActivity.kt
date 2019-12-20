@@ -41,6 +41,11 @@ abstract class BaseActivity<P : BasePresenter<out IBaseContract.IBaseView, out I
         loadingView?.loadingViewSetVisibility(View.VISIBLE)
     }
 
+    protected fun showNoPermission(){
+        loadingView?.loadingViewSetVisibility(View.GONE)
+        loadingView?.noPermissionView(View.VISIBLE)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutId())

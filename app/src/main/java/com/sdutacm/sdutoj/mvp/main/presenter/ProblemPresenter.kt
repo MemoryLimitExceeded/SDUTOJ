@@ -5,54 +5,56 @@ import com.sdutacm.sdutoj.mvp.main.model.ProblemModel.Companion.MIN_PROBLEM_PID
 
 class ProblemPresenter : FragmentPresenter() {
 
-    override val dataHelper: ProblemDataHelper = ProblemDataHelper()
-
     override fun getData(args: Any?) {
-        super.getData(
-            makeArgs(
-                dataHelper.pid,
-                dataHelper.title,
-                dataHelper.source,
-                dataHelper.cmp,
-                dataHelper.order,
-                dataHelper.limit
+        if (args is ProblemDataHelper) {
+            super.getData(
+                makeArgs(
+                    args.mPid,
+                    args.mTitle,
+                    args.mSource,
+                    args.mCmp,
+                    args.mOrder,
+                    args.mLimit
+                )
             )
-        )
+        }
     }
 
     override fun getMoreData(args: Any) {
-        super.getMoreData(
-            makeArgs(
-                dataHelper.pid,
-                dataHelper.title,
-                dataHelper.source,
-                dataHelper.cmp,
-                dataHelper.order,
-                dataHelper.limit
+        if (args is ProblemDataHelper) {
+            super.getMoreData(
+                makeArgs(
+                    args.mPid,
+                    args.mTitle,
+                    args.mSource,
+                    args.mCmp,
+                    args.mOrder,
+                    args.mLimit
+                )
             )
-        )
+        }
     }
 
     class ProblemDataHelper : FragmentPresenter.DataHelper() {
 
-        var pid = MIN_PROBLEM_PID
+        var mPid = MIN_PROBLEM_PID
 
-        var title: String? = null
+        var mTitle: String? = null
 
-        var source: String? = null
+        var mSource: String? = null
 
         fun setPid(pid: Int): ProblemDataHelper {
-            this.pid = pid
+            this.mPid = pid
             return this
         }
 
         fun setTitle(title: String): ProblemDataHelper {
-            this.title = title
+            this.mTitle = title
             return this
         }
 
         fun setSource(source: String): ProblemDataHelper {
-            this.source = source
+            this.mSource = source
             return this
         }
 

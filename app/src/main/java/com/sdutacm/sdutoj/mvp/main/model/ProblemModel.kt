@@ -30,7 +30,7 @@ class ProblemModel : FragmentModel() {
             pid: Int,
             title: String? = null,
             source: String? = null,
-            cmp: String? = null,
+            cmp: String,
             order: String,
             limit: Int
         ): Map<String, Any> {
@@ -58,7 +58,7 @@ class ProblemModel : FragmentModel() {
                 response: Response<List<ProblemBean>>
             ) {
                 val problemBeans = response.body()
-                if (problemBeans != null) {
+                if (problemBeans != null && problemBeans.isNotEmpty()) {
                     for (item in problemBeans) {
                         updateDatabase(item)
                     }
@@ -79,7 +79,7 @@ class ProblemModel : FragmentModel() {
         if (args[QUERY_PARAMETERS_PID] != null) {
             selectionArgs.add(args[QUERY_PARAMETERS_PID].toString())
             selection = addSelection(selection, ProblemTable.PID)
-            selection = addCmdParameters((args[QUERY_PARAMETERS_CMD] as String), selection)
+            selection = addCmdParameters((args[QUERY_PARAMETERS_CMP] as String), selection)
         }
         if (args[QUERY_PARAMETERS_TITLE] != null) {
             selectionArgs.add(args[QUERY_PARAMETERS_TITLE].toString())
@@ -104,6 +104,7 @@ class ProblemModel : FragmentModel() {
         )
         while (cursor.moveToNext()) {
             val item = ProblemBean(
+                cursor.getInt(cursor.getColumnIndex(ProblemTable.TYPE)),
                 cursor.getInt(cursor.getColumnIndex(ProblemTable.PID)),
                 cursor.getString(cursor.getColumnIndex(ProblemTable.TITLE)),
                 cursor.getInt(cursor.getColumnIndex(ProblemTable.TIME_LIMIT)),
@@ -131,7 +132,8 @@ class ProblemModel : FragmentModel() {
 
     override fun updateDatabase(data: Any) {
         val contentValues = ContentValues()
-        contentValues.put(ProblemTable.PID, (data as ProblemBean).pid)
+        contentValues.put(ProblemTable.TYPE, (data as ProblemBean).type)
+        contentValues.put(ProblemTable.PID, data.pid)
         contentValues.put(ProblemTable.TITLE, data.title)
         contentValues.put(ProblemTable.TIME_LIMIT, data.time_limit)
         contentValues.put(ProblemTable.MEMORY_LIMIT, data.memory_limit)

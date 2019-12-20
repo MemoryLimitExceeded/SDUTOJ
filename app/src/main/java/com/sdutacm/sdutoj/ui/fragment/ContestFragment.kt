@@ -4,6 +4,7 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.sdutacm.sdutoj.R
 import com.sdutacm.sdutoj.adapter.recyclerview.fragment.ContestAdapter
 import com.sdutacm.sdutoj.item.bean.ContestBean
 import com.sdutacm.sdutoj.mvp.base.BaseFragment
@@ -14,6 +15,8 @@ import com.sdutacm.sdutoj.mvp.main.common.FragmentModel
 import com.sdutacm.sdutoj.mvp.main.model.ContestModel
 import com.sdutacm.sdutoj.mvp.main.model.ContestModel.Companion.CONTEST_INTERVAL
 import com.sdutacm.sdutoj.mvp.main.presenter.ContestPresenter
+import com.sdutacm.sdutoj.ui.activity.MainActivity
+import com.sdutacm.sdutoj.ui.fragment.item.ContestItemFragment
 
 class ContestFragment : ListFragment<ContestItemEntity>() {
 
@@ -78,17 +81,26 @@ class ContestFragment : ListFragment<ContestItemEntity>() {
 
     override fun initAdapter() {
         mAdapter = ContestAdapter(ArrayList())
+        mAdapter.setOnItemClickListener { adapter, view, position ->
+            val data = (adapter.data[position] as ContestItemEntity).mContestBean
+            val itemFragment = ContestItemFragment.newInstance(R.layout.item_fragment, data)
+            val fragment = ViewPagerFragment.newInstance(R.layout.fragment_view_pager, itemFragment)
+            val transaction =
+                (activity as MainActivity).supportFragmentManager.beginTransaction()
+            transaction.addToBackStack(null)
+            fragment.show(transaction, null)
+        }
     }
 
     private fun getData() {
-        val args = mPresenter?.dataHelper as ContestPresenter.ContentDataHelper
+        val args = ContestPresenter.ContestDataHelper()
         args.setLimit(CONTEST_INTERVAL)
-        mPresenter?.getData(null)
+        mPresenter?.getData(args)
     }
 
     private fun getMoreData() {
         val data = mAdapter.getLastData()
-        val args = mPresenter?.dataHelper as ContestPresenter.ContentDataHelper
+        val args = ContestPresenter.ContestDataHelper()
         args.setLimit(CONTEST_INTERVAL)
         if (data != null) {
             args.setCid(data.mContestBean.cid)

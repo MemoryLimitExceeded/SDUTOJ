@@ -4,90 +4,92 @@ import com.sdutacm.sdutoj.mvp.main.model.StatusModel.Companion.makeArgs
 
 class StatusPresenter : FragmentPresenter() {
 
-    override val dataHelper: StatusDataHelper = StatusDataHelper()
-
     override fun getData(args: Any?) {
-        super.getData(
-            makeArgs(
-                dataHelper.runid,
-                dataHelper.uid,
-                dataHelper.userName,
-                dataHelper.pid,
-                dataHelper.cid,
-                dataHelper.result,
-                dataHelper.language,
-                dataHelper.cmp,
-                dataHelper.order,
-                dataHelper.limit
+        if (args is StatusDataHelper) {
+            super.getData(
+                makeArgs(
+                    args.mRunid,
+                    args.mUid,
+                    args.mUserName,
+                    args.mPid,
+                    args.mCid,
+                    args.mResult,
+                    args.mLanguage,
+                    args.mCmp,
+                    args.mOrder,
+                    args.mLimit
+                )
             )
-        )
+        }
     }
 
     override fun getMoreData(args: Any) {
-        super.getMoreData(
-            makeArgs(
-                dataHelper.runid,
-                dataHelper.uid,
-                dataHelper.userName,
-                dataHelper.pid,
-                dataHelper.cid,
-                dataHelper.result,
-                dataHelper.language,
-                dataHelper.cmp,
-                dataHelper.order,
-                dataHelper.limit
+        if (args is StatusDataHelper) {
+            super.getMoreData(
+                makeArgs(
+                    args.mRunid,
+                    args.mUid,
+                    args.mUserName,
+                    args.mPid,
+                    args.mCid,
+                    args.mResult,
+                    args.mLanguage,
+                    args.mCmp,
+                    args.mOrder,
+                    args.mLimit
+                )
             )
-        )
+        }
     }
 
     class StatusDataHelper : DataHelper() {
 
-        var runid: Int? = null
+        var mRunid: Int? = null
 
-        var uid: Int? = null
+        var mUid: Int? = null
 
-        var userName: String? = null
+        var mUserName: String? = null
 
-        var pid: Int? = null
+        var mPid: Int? = null
 
-        var cid: Int? = null
+        var mCid: Int? = null
 
-        var result: Int? = null
+        var mResult: Int? = null
 
-        var language: Int? = null
+        var mLanguage: Int? = null
 
         fun setRunId(runid: Int): StatusDataHelper {
-            this.runid = runid
+            this.mRunid = runid
             return this
         }
 
         fun setUId(uid: Int): StatusDataHelper {
-            this.uid = uid
+            this.mUid = uid
             return this
         }
 
         fun setUserName(userName: String): StatusDataHelper {
-            this.userName = userName
+            this.mUserName = userName
             return this
         }
 
         fun setPId(pid: Int): StatusDataHelper {
-            this.pid = pid
+            this.mPid = pid
             return this
         }
 
         fun setCId(cid: Int): StatusDataHelper {
-            this.cid = cid
+            this.mCid = cid
             return this
         }
 
         fun setResult(result: Int): StatusDataHelper {
-            this.result = result
+            this.mResult = result
             return this
         }
 
         fun setLanguage(language: Int): StatusDataHelper {
-            this.language = language
+            this.mLanguage = language
             return this
         }
 

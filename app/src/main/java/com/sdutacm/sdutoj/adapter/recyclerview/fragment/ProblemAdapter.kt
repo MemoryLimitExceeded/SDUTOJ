@@ -16,12 +16,12 @@ class ProblemAdapter(data: List<ProblemItemEntity>) : ListAdapter<ProblemItemEnt
     override fun convert(helper: QuickViewHolder, item: ProblemItemEntity) {
         val content = item.mProblemBean
         setTitle(helper, content)
-            .setLimit(helper, content)
-            .setDate(helper, content)
-            .setSubmission(helper, content)
+        setLimit(helper, content)
+        setDate(helper, content)
+        setSubmission(helper, content)
     }
 
-    private fun setSubmission(helper: QuickViewHolder, content: ProblemBean): ProblemAdapter {
+    private fun setSubmission(helper: QuickViewHolder, content: ProblemBean) {
         helper.setText(
             R.id.item_problem_list_commit_count,
             getResString(R.string.problem_item_commit_count).format(
@@ -30,15 +30,13 @@ class ProblemAdapter(data: List<ProblemItemEntity>) : ListAdapter<ProblemItemEnt
                 content.submission
             )
         )
-        return this
     }
 
-    private fun setDate(helper: QuickViewHolder, content: ProblemBean): ProblemAdapter {
+    private fun setDate(helper: QuickViewHolder, content: ProblemBean) {
         helper.setText(R.id.item_problem_list_create_date, content.added_time)
-        return this
     }
 
-    private fun setLimit(helper: QuickViewHolder, content: ProblemBean): ProblemAdapter {
+    private fun setLimit(helper: QuickViewHolder, content: ProblemBean) {
         helper.setText(
             R.id.item_problem_list_limit,
             getResString(R.string.problem_item_limit).format(
@@ -46,15 +44,13 @@ class ProblemAdapter(data: List<ProblemItemEntity>) : ListAdapter<ProblemItemEnt
                 content.memory_limit
             )
         )
-        return this
     }
 
-    private fun setTitle(helper: QuickViewHolder, content: ProblemBean): ProblemAdapter {
+    private fun setTitle(helper: QuickViewHolder, content: ProblemBean) {
         helper.setText(
             R.id.item_problem_list_title,
             getResString(R.string.problem_item_title).format(content.pid, content.title)
         )
-        return this
     }
 
     private fun checkDivisor(submission: Int): Double {

@@ -84,20 +84,16 @@ class ProblemFragment : ListFragment<ProblemItemEntity>() {
         mAdapter.setOnItemClickListener { adapter, view, position ->
             val data = (adapter.data[position] as ProblemItemEntity).mProblemBean
             val itemFragment = ProblemItemFragment.newInstance(R.layout.item_fragment, data)
+            val fragment = ViewPagerFragment.newInstance(R.layout.fragment_view_pager, itemFragment)
             val transaction =
-                (activity as MainActivity?)?.supportFragmentManager?.beginTransaction()
-            transaction?.add(
-                R.id.fragment_container,
-                ViewPagerFragment.newInstance(R.layout.fragment_view_pager, itemFragment)
-            )
-                ?.addToBackStack(null)
-                ?.commit()
-            (activity as MainActivity?)?.getFragmentContainer()?.visibility = View.VISIBLE
+                (activity as MainActivity).supportFragmentManager.beginTransaction()
+            transaction.addToBackStack(null)
+            fragment.show(transaction, null)
         }
     }
 
     private fun getData() {
-        val args = mPresenter?.dataHelper as ProblemPresenter.ProblemDataHelper
+        val args = ProblemPresenter.ProblemDataHelper()
         args.setPid(MIN_PROBLEM_PID)
             .setCmp(FragmentModel.CommonQueryParameters.CMP_GREATER_OR_EQUAL.parameters)
             .setOrder(FragmentModel.CommonQueryParameters.ORDER_ASC.parameters)
@@ -107,7 +103,7 @@ class ProblemFragment : ListFragment<ProblemItemEntity>() {
 
     private fun getMoreData() {
         val data = mAdapter.getLastData()
-        val args = mPresenter?.dataHelper as ProblemPresenter.ProblemDataHelper
+        val args = ProblemPresenter.ProblemDataHelper()
         args.setLimit(PROBLEM_INTERVAL)
         if (data != null) {
             args.setPid(data.mProblemBean.pid)

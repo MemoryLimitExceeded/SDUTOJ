@@ -9,8 +9,6 @@ open class FragmentPresenter() : BasePresenter<IMainContract.IMainView, Fragment
 
     protected var mType: Int = 0
 
-    open val dataHelper: DataHelper = DataHelper()
-
     companion object {
 
         protected const val TYPE_GET_DATA_ID = 0
@@ -54,26 +52,26 @@ open class FragmentPresenter() : BasePresenter<IMainContract.IMainView, Fragment
         }
     }
 
-    open class DataHelper {
+    abstract class DataHelper {
 
-        var cmp: String? = null
+        var mCmp: String = FragmentModel.CommonQueryParameters.CMP_EQUAL.parameters
 
-        var order: String = FragmentModel.CommonQueryParameters.ORDER_DESC.parameters
+        var mOrder: String = FragmentModel.CommonQueryParameters.ORDER_DESC.parameters
 
-        var limit: Int = 1
+        var mLimit: Int = 1
 
         fun setCmp(cmp: String): DataHelper {
-            this.cmp = cmp
+            this.mCmp = cmp
             return this
         }
 
         fun setOrder(order: String): DataHelper {
-            this.order = order
+            this.mOrder = order
             return this
         }
 
         fun setLimit(limit: Int): DataHelper {
-            this.limit = limit
+            this.mLimit = limit
             return this
         }
 

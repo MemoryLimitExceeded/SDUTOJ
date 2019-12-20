@@ -80,14 +80,14 @@ class StatusFragment : ListFragment<StatusItemEntity>() {
     }
 
     private fun getData() {
-        val args = mPresenter?.dataHelper as StatusPresenter.StatusDataHelper
-        args.setLimit(STATUS_INTERVAL)
-        mPresenter?.getData(null)
+        val args = StatusPresenter.StatusDataHelper()
+            .setLimit(STATUS_INTERVAL)
+        mPresenter?.getData(args)
     }
 
     private fun getMoreData() {
         val data = mAdapter.getLastData()
-        val args = mPresenter?.dataHelper as StatusPresenter.StatusDataHelper
+        val args = StatusPresenter.StatusDataHelper()
         args.setLimit(STATUS_INTERVAL)
         if (data != null) {
             args.setRunId(data.mStatusBean.runid)

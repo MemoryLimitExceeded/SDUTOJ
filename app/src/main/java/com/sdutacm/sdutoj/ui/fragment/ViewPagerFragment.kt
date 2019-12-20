@@ -6,11 +6,11 @@ import androidx.viewpager.widget.ViewPager
 import com.sdutacm.sdutoj.R
 import com.sdutacm.sdutoj.adapter.viewpager.ViewPagerItemAdapter
 import com.sdutacm.sdutoj.item.entity.common.ListItemEntity
-import com.sdutacm.sdutoj.mvp.base.BaseFragment
+import com.sdutacm.sdutoj.mvp.base.BaseDialogFragment
 import com.sdutacm.sdutoj.mvp.main.IMainContract
 import com.sdutacm.sdutoj.ui.fragment.common.ItemFragment
 
-class ViewPagerFragment : BaseFragment(), IMainContract.IMainView {
+class ViewPagerFragment : BaseDialogFragment(), IMainContract.IMainView {
 
     private lateinit var mViewPager: ViewPager
 

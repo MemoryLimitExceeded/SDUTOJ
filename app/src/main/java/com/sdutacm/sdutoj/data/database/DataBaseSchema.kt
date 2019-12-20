@@ -10,6 +10,8 @@ class ProblemTable {
 
         const val TABLE_NAME = "problemtable"
 
+        const val TYPE = "type"
+
         const val PID = "pid"
 
         const val TITLE = "title"
