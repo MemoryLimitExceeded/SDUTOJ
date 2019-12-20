@@ -5,6 +5,7 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import com.sdutacm.sdutoj.adapter.recyclerview.itemfragment.ProblemItemAdapter
 import com.sdutacm.sdutoj.item.bean.ProblemBean
+import com.sdutacm.sdutoj.item.entity.common.ListItemEntity.Companion.DEFAULT_TYPE
 import com.sdutacm.sdutoj.item.entity.itemfragment.SingleProblemEntity
 import com.sdutacm.sdutoj.item.entity.itemfragment.SingleProblemEntity.Companion.DESCRIPTION_TYPE
 import com.sdutacm.sdutoj.item.entity.itemfragment.SingleProblemEntity.Companion.HINT_TYPE
@@ -62,6 +63,8 @@ class ProblemItemFragment : ItemFragment<SingleProblemEntity>() {
     }
 
     override fun updateData(data: Any?) {
+        this.data = (data as ArrayList<*>).get(0) as Parcelable
+        setData()
     }
 
     override fun loadMoreData(data: Any) {

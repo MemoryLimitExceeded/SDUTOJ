@@ -2,6 +2,7 @@ package com.sdutacm.sdutoj.adapter.common
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.text.Html
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
@@ -59,6 +60,13 @@ abstract class ListAdapter<T : ListItemEntity>(data: List<T>) :
             }
         }
         return oldString.substring(start, end)
+    }
+
+    protected fun htmlToText(htmlString: String): String {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(htmlString, 0, null, null).toString()
+        }
+        return htmlString
     }
 
 }

@@ -18,8 +18,10 @@
     <string name="status_item_memory">Memory: %1$s kb</string>
     <string name="status_item_code_len">Code Len：%1$s B</string>
 
+
     <string name="problem_item_fragment_title_tl">Time Limit: %1$s ms</string>
     <string name="problem_item_fragment_title_ml">Memory Limit: %1$s kb</string>
+
     <string name="problem_item_fragment_input_description">Description</string>
     <string name="problem_item_fragment_input_title">Input</string>
     <string name="problem_item_fragment_output_title">Output</string>

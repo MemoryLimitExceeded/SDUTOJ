@@ -7,7 +7,7 @@ import com.sdutacm.sdutoj.mvp.main.common.FragmentModel
 open class FragmentPresenter() : BasePresenter<IMainContract.IMainView, FragmentModel>(),
     IMainContract.IMainPresenter<IMainContract.IMainView> {
 
-    protected var mType: Int = 0
+    private var mType: Int = 0
 
     companion object {
 

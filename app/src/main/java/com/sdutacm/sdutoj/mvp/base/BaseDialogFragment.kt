@@ -6,29 +6,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.DialogFragment
+import com.sdutacm.sdutoj.R
 import com.sdutacm.sdutoj.mvp.main.presenter.FragmentPresenter
 import com.sdutacm.sdutoj.ui.widget.LoadingView
 
-abstract class BaseFragment : Fragment(),
-    IBaseContract.IBaseView {
+abstract class BaseDialogFragment : AppCompatDialogFragment() ,IBaseContract.IBaseView{
+
+    var loadingView: LoadingView? = null
 
     private var mContentLayoutId = 0
 
-    protected var loadingView: LoadingView? = null
+    private var mIsFirstCreate = true
 
-    protected var mIsFirstCreate = true
+    private var mRetryButtonListener: View.OnClickListener? = null
 
     protected var mPresenter: FragmentPresenter? = null
-
-    protected var mRetryButtonListener: View.OnClickListener? = null
 
     companion object {
 
         private const val ARG_CONTENT_LAYOUT_ID = "ContentLayoutId"
 
         @JvmStatic
-        fun newInstance(@LayoutRes contentLayoutId: Int, fragment: BaseFragment) {
+        fun newInstance(@LayoutRes contentLayoutId: Int, fragment: BaseDialogFragment) {
             fragment.arguments = Bundle().apply {
                 putInt(ARG_CONTENT_LAYOUT_ID, contentLayoutId)
             }
@@ -77,6 +78,7 @@ abstract class BaseFragment : Fragment(),
         arguments?.let {
             mContentLayoutId = it.getInt(ARG_CONTENT_LAYOUT_ID)
         }
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.BaseDialogFragment)
     }
 
     override fun onCreateView(

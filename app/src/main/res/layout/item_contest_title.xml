@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/NormalCardView">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/item_contest_title_content"
+                style="@style/BigTitleTextView" />
+
+        <LinearLayout
+                android:id="@+id/item_contest_title_start_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/item_contest_title_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_start_time" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/item_contest_title_start_time_content"
+                    style="@style/NormalTextView" />
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/item_contest_title_end_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/item_contest_title_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_end_time" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/item_contest_title_end_time_content"
+                    style="@style/NormalTextView" />
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/item_contest_title_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/item_contest_title_end_time"
+                android:layout_marginTop="5dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/item_contest_title_status_ic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/item_contest_title_status_content"
+                    style="@style/NormalTextView" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/item_contest_title_description"
+                style="@style/SmallTextView"
+                android:layout_below="@id/item_contest_title_status"
+                android:layout_marginTop="5dp" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
